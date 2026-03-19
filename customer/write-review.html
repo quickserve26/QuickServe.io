@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Write Review - QwikServe</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f8f9fa; }
+        .review-container { max-width: 600px; margin: 2rem auto; padding: 2rem; background: white; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        h1 { margin-bottom: 0.5rem; }
+        .vendor-badge { background: #eef2ff; padding: 1rem; border-radius: 5px; margin: 1rem 0; }
+        .rating-section { margin: 2rem 0; }
+        .rating-stars { font-size: 2.5rem; color: #fbbf24; cursor: pointer; }
+        .rating-stars i { margin-right: 0.5rem; }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 500; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 5px; }
+        .form-group textarea { height: 120px; }
+        .photo-upload { border: 2px dashed #ddd; padding: 1.5rem; text-align: center; border-radius: 5px; cursor: pointer; }
+        .submit-btn { width: 100%; padding: 1rem; background: #6366f1; color: white; border: none; border-radius: 5px; font-size: 1.1rem; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="review-container">
+        <h1>Write a Review</h1>
+        <p>Share your experience with others</p>
+
+        <div class="vendor-badge">
+            <strong>Mma Keitumetse's Kitchen</strong> - Order #QW-2024-1234
+        </div>
+
+        <div class="rating-section">
+            <label>Overall Rating</label>
+            <div class="rating-stars">
+                <i class="far fa-star" onclick="setRating(1)"></i>
+                <i class="far fa-star" onclick="setRating(2)"></i>
+                <i class="far fa-star" onclick="setRating(3)"></i>
+                <i class="far fa-star" onclick="setRating(4)"></i>
+                <i class="far fa-star" onclick="setRating(5)"></i>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Review Title</label>
+            <input type="text" placeholder="Summarize your experience">
+        </div>
+
+        <div class="form-group">
+            <label>Your Review</label>
+            <textarea placeholder="What did you like or dislike? How was the food quality?"></textarea>
+        </div>
+
+        <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+                <label>Food Quality</label>
+                <select>
+                    <option>Excellent</option>
+                    <option>Good</option>
+                    <option>Average</option>
+                    <option>Poor</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Wait Time</label>
+                <select>
+                    <option>Very Fast (<5 min)</option>
+                    <option>Fast (5-10 min)</option>
+                    <option>Average (10-15 min)</option>
+                    <option>Slow (>15 min)</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="photo-upload">
+            <i class="fas fa-camera" style="font-size: 2rem; color: #666; margin-bottom: 0.5rem;"></i>
+            <p>Click to upload photos (optional)</p>
+        </div>
+
+        <button class="submit-btn" onclick="submitReview()">
+            Submit Review
+        </button>
+    </div>
+
+    <script>
+        let currentRating = 0;
+        
+        function setRating(rating) {
+            currentRating = rating;
+            const stars = document.querySelectorAll('.rating-stars i');
+            for (let i = 0; i < stars.length; i++) {
+                if (i < rating) {
+                    stars[i].className = 'fas fa-star';
+                } else {
+                    stars[i].className = 'far fa-star';
+                }
+            }
+        }
+        
+        function submitReview() {
+            alert('Review submitted! Thank you for your feedback.');
+            window.location.href = 'my-orders.html';
+        }
+    </script>
+</body>
+</html>
