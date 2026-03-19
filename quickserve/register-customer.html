@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Customer Account - QwikServe</title>
+    <link rel="stylesheet" href="styles/auth.css">
+</head>
+<body class="auth-page">
+    <div class="auth-container">
+        <div class="logo">QwikServe</div>
+        <h1>Create Customer Account</h1>
+        
+        <form id="customerRegisterForm" class="auth-form">
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" placeholder="John Doe" required>
+                </div>
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" placeholder="71 234 567" required>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" placeholder="john@example.com" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" placeholder="Create password" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Confirm Password</label>
+                <input type="password" placeholder="Confirm password" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Default Location</label>
+                <input type="text" placeholder="e.g., Gaborone CBD" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Favorite Cuisines (optional)</label>
+                <select multiple>
+                    <option>Traditional</option>
+                    <option>Fast Food</option>
+                    <option>Snacks</option>
+                    <option>Beverages</option>
+                </select>
+            </div>
+            
+            <div class="checkbox-group">
+                <input type="checkbox" id="terms" required>
+                <label for="terms">I agree to the Terms of Service and Privacy Policy</label>
+            </div>
+            
+            <button type="submit" class="primary-btn full-width">
+                Create Customer Account
+            </button>
+        </form>
+        
+        <p class="login-link">Already have an account? <a href="login.html">Login</a></p>
+    </div>
+
+    <script>
+    document.getElementById('customerRegisterForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        // After successful registration, redirect to customer dashboard
+        window.location.href = 'customer/dashboard.html';
+    });
+    </script>
+</body>
+</html>
