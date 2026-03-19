@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment - QwikServe</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f8f9fa; }
+        .navbar { background: white; padding: 1rem 2rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1); display: flex; justify-content: space-between; }
+        .logo { font-size: 1.5rem; font-weight: bold; color: #6366f1; }
+        .payment-container { max-width: 600px; margin: 2rem auto; padding: 2rem; background: white; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        h1 { margin-bottom: 2rem; }
+        .payment-methods { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-bottom: 2rem; }
+        .payment-method { border: 2px solid #ddd; border-radius: 10px; padding: 1rem; text-align: center; cursor: pointer; }
+        .payment-method.selected { border-color: #6366f1; background: #eef2ff; }
+        .payment-method i { font-size: 2rem; margin-bottom: 0.5rem; }
+        .payment-form { margin-top: 2rem; }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 500; }
+        .form-group input { width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 5px; }
+        .order-summary { background: #f8f9fa; padding: 1.5rem; border-radius: 5px; margin: 2rem 0; }
+        .summary-row { display: flex; justify-content: space-between; margin: 0.5rem 0; }
+        .summary-row.total { font-size: 1.2rem; font-weight: bold; border-top: 1px solid #ddd; padding-top: 1rem; margin-top: 1rem; }
+        .pay-btn { width: 100%; padding: 1rem; background: #6366f1; color: white; border: none; border-radius: 5px; font-size: 1.1rem; cursor: pointer; }
+        .pay-btn:hover { background: #4f46e5; }
+        .secure-badge { text-align: center; margin-top: 1rem; color: #666; }
+        .secure-badge i { color: #10b981; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-bolt"></i>
+            <span>QwikServe</span>
+        </div>
+        <div>
+            <span>Payment</span>
+        </div>
+    </nav>
+
+    <div class="payment-container">
+        <h1>Complete Payment</h1>
+        
+        <!-- Order Summary -->
+        <div class="order-summary">
+            <h3>Order Summary</h3>
+            <div class="summary-row">
+                <span>Subtotal</span>
+                <span>P135</span>
+            </div>
+            <div class="summary-row">
+                <span>Delivery Fee</span>
+                <span>P15</span>
+            </div>
+            <div class="summary-row total">
+                <span>Total</span>
+                <span>P150</span>
+            </div>
+        </div>
+
+        <!-- Payment Methods -->
+        <h3>Select Payment Method</h3>
+        <div class="payment-methods">
+            <div class="payment-method selected" onclick="selectMethod('orange')">
+                <i class="fas fa-mobile-alt"></i>
+                <h4>Orange Money</h4>
+            </div>
+            <div class="payment-method" onclick="selectMethod('myzaka')">
+                <i class="fas fa-wifi"></i>
+                <h4>MyZaka</h4>
+            </div>
+            <div class="payment-method" onclick="selectMethod('card')">
+                <i class="fas fa-credit-card"></i>
+                <h4>Card</h4>
+            </div>
+            <div class="payment-method" onclick="selectMethod('cash')">
+                <i class="fas fa-money-bill"></i>
+                <h4>Cash on Collection</h4>
+            </div>
+        </div>
+
+        <!-- Orange Money Form (shown by default) -->
+        <div id="orangeForm" class="payment-form">
+            <div class="form-group">
+                <label>Orange Money Phone Number</label>
+                <input type="tel" placeholder="71 234 567" value="71 234 567">
+            </div>
+            <div class="form-group">
+                <label>PIN</label>
+                <input type="password" placeholder="Enter PIN" maxlength="4">
+            </div>
+        </div>
+
+        <!-- MyZaka Form (hidden initially) -->
+        <div id="myzakaForm" class="payment-form" style="display: none;">
+            <div class="form-group">
+                <label>MyZaka Phone Number</label>
+                <input type="tel" placeholder="71 234 567">
+            </div>
+            <div class="form-group">
+                <label>PIN</label>
+                <input type="password" placeholder="Enter PIN" maxlength="4">
+            </div>
+        </div>
+
+        <!-- Card Form (hidden initially) -->
+        <div id="cardForm" class="payment-form" style="display: none;">
+            <div class="form-group">
+                <label>Card Number</label>
+                <input type="text" placeholder="1234 5678 9012 3456">
+            </div>
+            <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div>
+                    <label>Expiry Date</label>
+                    <input type="text" placeholder="MM/YY">
+                </div>
+                <div>
+                    <label>CVV</label>
+                    <input type="text" placeholder="123">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Cardholder Name</label>
+                <input type="text" placeholder="John Doe">
+            </div>
+        </div>
+
+        <!-- Cash Form (hidden initially) -->
+        <div id="cashForm" class="payment-form" style="display: none;">
+            <p style="padding: 1rem; background: #eef2ff; border-radius: 5px;">
+                <i class="fas fa-info-circle"></i>
+                You'll pay when you collect your order. Please have exact change if possible.
+            </p>
+        </div>
+
+        <button class="pay-btn" onclick="processPayment()">
+            Pay P150 <i class="fas fa-arrow-right"></i>
+        </button>
+        
+        <div class="secure-badge">
+            <i class="fas fa-lock"></i> Secure payment powered by PayFast
+        </div>
+    </div>
+
+    <script>
+        function selectMethod(method) {
+            // Remove selected class from all
+            document.querySelectorAll('.payment-method').forEach(el => {
+                el.classList.remove('selected');
+            });
+            
+            // Add selected class to clicked method
+            event.currentTarget.classList.add('selected');
+            
+            // Hide all forms
+            document.getElementById('orangeForm').style.display = 'none';
+            document.getElementById('myzakaForm').style.display = 'none';
+            document.getElementById('cardForm').style.display = 'none';
+            document.getElementById('cashForm').style.display = 'none';
+            
+            // Show selected form
+            if (method === 'orange') {
+                document.getElementById('orangeForm').style.display = 'block';
+            } else if (method === 'myzaka') {
+                document.getElementById('myzakaForm').style.display = 'block';
+            } else if (method === 'card') {
+                document.getElementById('cardForm').style.display = 'block';
+            } else if (method === 'cash') {
+                document.getElementById('cashForm').style.display = 'block';
+            }
+        }
+        
+        function processPayment() {
+            alert('Payment successful! Redirecting to order confirmation...');
+            window.location.href = 'order-confirmation.html';
+        }
+    </script>
+</body>
+</html>
