@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - QwikServe</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f8f9fa; }
+        .navbar { background: white; padding: 1rem 2rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .settings-container { max-width: 600px; margin: 2rem auto; padding: 2rem; background: white; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .settings-section { margin-bottom: 2rem; padding-bottom: 2rem; border-bottom: 1px solid #eee; }
+        .settings-section h2 { margin-bottom: 1rem; }
+        .setting-item { display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; }
+        .toggle-switch { width: 50px; height: 24px; background: #ddd; border-radius: 12px; position: relative; cursor: pointer; }
+        .toggle-switch.active { background: #6366f1; }
+        .toggle-switch:after { content: ''; position: absolute; width: 20px; height: 20px; background: white; border-radius: 50%; top: 2px; left: 2px; transition: 0.3s; }
+        .toggle-switch.active:after { left: 28px; }
+        .danger-zone { background: #fee2e2; padding: 1rem; border-radius: 5px; }
+        .delete-btn { background: #ef4444; color: white; border: none; padding: 0.5rem 1rem; border-radius: 5px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">QwikServe</div>
+    </div>
+
+    <div class="settings-container">
+        <h1>Settings</h1>
+
+        <div class="settings-section">
+            <h2>Notifications</h2>
+            <div class="setting-item">
+                <span>Push Notifications</span>
+                <div class="toggle-switch active" onclick="toggle(this)"></div>
+            </div>
+            <div class="setting-item">
+                <span>SMS Alerts</span>
+                <div class="toggle-switch" onclick="toggle(this)"></div>
+            </div>
+            <div class="setting-item">
+                <span>Email Updates</span>
+                <div class="toggle-switch active" onclick="toggle(this)"></div>
+            </div>
+        </div>
+
+        <div class="settings-section">
+            <h2>Privacy</h2>
+            <div class="setting-item">
+                <span>Make profile public</span>
+                <div class="toggle-switch" onclick="toggle(this)"></div>
+            </div>
+            <div class="setting-item">
+                <span>Show order history</span>
+                <div class="toggle-switch active" onclick="toggle(this)"></div>
+            </div>
+        </div>
+
+        <div class="settings-section">
+            <h2>Security</h2>
+            <button style="padding: 0.5rem 1rem; background: #6366f1; color: white; border: none; border-radius: 5px;">Change Password</button>
+        </div>
+
+        <div class="danger-zone">
+            <h3 style="color: #ef4444;">Danger Zone</h3>
+            <p style="margin: 1rem 0;">Once you delete your account, there is no going back.</p>
+            <button class="delete-btn">Delete Account</button>
+        </div>
+    </div>
+
+    <script>
+        function toggle(element) {
+            element.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>
