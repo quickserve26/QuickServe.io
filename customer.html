@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>QuickServe - Customer Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #2a2a2a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #ff6b35;
+            border-radius: 4px;
+        }
+
+        .navbar {
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 107, 53, 0.3);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .logo-icon {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #ff6b35, #ff8c5a);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: #000;
+            box-shadow: 0 0 20px rgba(255, 107, 53, 0.5);
+        }
+
+        .logo-text {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ff6b35, #ffaa7a);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .logout-btn {
+            background: rgba(255, 107, 53, 0.2);
+            border: 1px solid #ff6b35;
+            padding: 8px 20px;
+            border-radius: 40px;
+            color: #ff6b35;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: #ff6b35;
+            color: #000;
+            transform: scale(1.05);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px 5%;
+        }
+
+        /* Auth Pages */
+        .auth-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 80vh;
+        }
+
+        .auth-card {
+            background: rgba(30, 30, 30, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            padding: 40px;
+            width: 100%;
+            max-width: 450px;
+            border: 1px solid rgba(255, 107, 53, 0.3);
+            transition: all 0.4s ease;
+        }
+
+        .auth-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(255, 107, 53, 0.2);
+            border-color: #ff6b35;
+        }
+
+        .auth-card h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #ff6b35;
+        }
+
+        .auth-input {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 20px;
+            background: #1e1e1e;
+            border: 1px solid #333;
+            border-radius: 12px;
+            color: white;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .auth-input:focus {
+            outline: none;
+            border-color: #ff6b35;
+            box-shadow: 0 0 10px rgba(255, 107, 53, 0.3);
+            transform: scale(1.02);
+        }
+
+        .auth-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #ff6b35, #ff8c5a);
+            border: none;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #000;
+        }
+
+        .auth-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 20px rgba(255, 107, 53, 0.4);
+        }
+
+        .auth-switch {
+            text-align: center;
+            margin-top: 20px;
+            color: #aaa;
+        }
+
+        .auth-switch span {
+            color: #ff6b35;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        /* Dashboard */
+        .dashboard {
+            display: none;
+        }
+
+        .dashboard.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            background: rgba(30, 30, 30, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            border: 1px solid rgba(255, 107, 53, 0.2);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 107, 53, 0.1), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: rgba(255, 107, 53, 0.6);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 107, 53, 0.2);
+        }
+
+        .card:hover::before {
+            left: 100%;
+        }
+
+        .carousel-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 24px;
+            margin-bottom: 30px;
+        }
+
+        .carousel-track {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+
+        .carousel-slide {
+            min-width: 100%;
+            position: relative;
+            height: 300px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 24px;
+            display: flex;
+            align-items: flex-end;
+            padding: 30px;
+        }
+
+        .carousel-slide::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 50%;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            border-radius: 24px;
+        }
+
+        .carousel-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0,0,0,0.7);
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+            color: white;
+        }
+
+        .carousel-btn:hover {
+            background: #ff6b35;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .carousel-btn.prev { left: 20px; }
+        .carousel-btn.next { right: 20px; }
+
+        .search-bar {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .search-bar input {
+            flex: 1;
+            padding: 15px 20px;
+            border-radius: 50px;
+            border: 1px solid #333;
+            background: #1e1e1e;
+            color: white;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .search-bar input:focus {
+            outline: none;
+            border-color: #ff6b35;
+            box-shadow: 0 0 15px rgba(255,107,53,0.3);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #ff6b35, #ff8c5a);
+            border: none;
+            padding: 12px 28px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #000;
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.05) translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 107, 53, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #ff6b35;
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #ff6b35;
+        }
+
+        .btn-outline:hover {
+            background: #ff6b35;
+            color: #000;
+            transform: scale(1.05);
+        }
+
+        .vendors-grid, .orders-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .vendor-card, .order-card {
+            background: #252525;
+            border-radius: 16px;
+            padding: 20px;
+            transition: all 0.4s ease;
+            cursor: pointer;
+        }
+
+        .vendor-card:hover, .order-card:hover {
+            border-radius: 40px 16px 40px 16px;
+            background: linear-gradient(135deg, #2a2a2a, #1f1f1f);
+            transform: translateX(8px);
+            box-shadow: -8px 8px 20px rgba(255, 107, 53, 0.3);
+        }
+
+        .menu-item {
+            background: #252525;
+            border-radius: 12px;
+            padding: 15px;
+            margin: 15px 0;
+            transition: all 0.3s ease;
+        }
+
+        .menu-item:hover {
+            border-radius: 24px 12px 24px 12px;
+            transform: scale(1.02);
+            background: #2a2a2a;
+        }
+
+        .order-progress {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+        }
+
+        .progress-step {
+            text-align: center;
+            flex: 1;
+        }
+
+        .step-icon {
+            width: 45px;
+            height: 45px;
+            background: #333;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            transition: all 0.3s ease;
+        }
+
+        .progress-step.completed .step-icon {
+            background: #ff6b35;
+            color: #000;
+            transform: scale(1.1);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: #1e1e1e;
+            border-radius: 24px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            border: 1px solid #ff6b35;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .welcome-header {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #ff6b3520, #ff8c5a20);
+            border-radius: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo" onclick="window.location.href='index.html'">
+            <div class="logo-icon">QS</div>
+            <div class="logo-text">QuickServe</div>
+        </div>
+        <div id="navUserInfo" style="display: flex; align-items: center; gap: 20px;">
+            <span id="userNameDisplay" style="color: #ff6b35;"></span>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Login/Register Section -->
+        <div id="authSection" class="auth-container">
+            <div class="auth-card">
+                <h2 id="authTitle">Customer Login</h2>
+                <input type="text" id="authEmail" placeholder="Email Address" class="auth-input">
+                <input type="password" id="authPassword" placeholder="Password" class="auth-input">
+                <button class="auth-btn" onclick="handleAuth()" id="authBtn">Login</button>
+                <div class="auth-switch">
+                    <span id="switchText">Don't have an account? <span onclick="toggleAuthMode()">Register</span></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Customer Dashboard -->
+        <div id="dashboard" class="dashboard">
+            <div class="welcome-header">
+                <h2>Welcome back, <span id="welcomeName">Customer</span>! 🍔</h2>
+                <p>Order your favorite food and skip the queue</p>
+            </div>
+
+            <!-- Food Carousel -->
+            <div class="carousel-container">
+                <div class="carousel-track" id="carouselTrack">
+                    <div class="carousel-slide" style="background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=1200');">
+                        <div class="carousel-content">
+                            <h2>Today's Special: Grilled Chicken Burger</h2>
+                            <p>Only P45.00 - Order now!</p>
+                        </div>
+                    </div>
+                    <div class="carousel-slide" style="background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=1200');">
+                        <div class="carousel-content">
+                            <h2>Breakfast Combo: Coffee + Pastry</h2>
+                            <p>Starting at P25.00</p>
+                        </div>
+                    </div>
+                    <div class="carousel-slide" style="background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=1200');">
+                        <div class="carousel-content">
+                            <h2>New Vendor: Mama's Kitchen</h2>
+                            <p>Authentic home-cooked meals</p>
+                        </div>
+                    </div>
+                </div>
+                <button class="carousel-btn prev" onclick="prevSlide()">❮</button>
+                <button class="carousel-btn next" onclick="nextSlide()">❯</button>
+            </div>
+
+            <!-- Search -->
+            <div class="search-bar">
+                <input type="text" id="vendorSearch" placeholder="🔍 Search vendors by name or location..." onkeyup="filterVendors()">
+                <button class="btn-primary" onclick="showNearbyVendors()">📍 Near Me</button>
+            </div>
+
+            <!-- Vendors Grid -->
+            <h2><i class="fas fa-store"></i> Nearby Vendors</h2>
+            <div class="vendors-grid" id="vendorsGrid"></div>
+
+            <!-- My Orders Section -->
+            <h2 style="margin-top: 40px;"><i class="fas fa-truck"></i> My Active Orders</h2>
+            <div class="orders-grid" id="myOrdersGrid"></div>
+        </div>
+    </div>
+
+    <!-- Menu Modal -->
+    <div id="menuModal" class="modal">
+        <div class="modal-content">
+            <h3 id="modalVendorName"></h3>
+            <div id="menuItemsList"></div>
+            <button class="btn-outline" onclick="closeModal()" style="margin-top: 20px;">Close</button>
+        </div>
+    </div>
+
+    <!-- Track Modal -->
+    <div id="trackModal" class="modal">
+        <div class="modal-content">
+            <h3>Track Your Order</h3>
+            <div id="trackingStatus"></div>
+            <button class="btn-outline" onclick="closeTrackModal()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        // Storage Keys
+        const STORAGE_KEY = 'quickServe_customers';
+        const SESSION_KEY = 'quickServe_currentCustomer';
+
+        // Sample Vendors Data
+        let vendors = [
+            { id: 1, name: "Mama's Kitchen", location: "Gaborone CBD", menu: [{name: "Beef Stew", price: 35, desc: "Tender beef with rice"}, {name: "Grilled Chicken", price: 45, desc: "With chips and salad"}] },
+            { id: 2, name: "Tasty Bites", location: "UB Campus", menu: [{name: "Burger", price: 30, desc: "Beef burger with fries"}, {name: "Pizza Slice", price: 25, desc: "Cheese and pepperoni"}] },
+            { id: 3, name: "Spice Corner", location: "Fairgrounds", menu: [{name: "Biryani", price: 50, desc: "Spicy chicken biryani"}, {name: "Samosa", price: 10, desc: "3 pieces"}] }
+        ];
+
+        let orders = [];
+        let currentCustomer = null;
+        let currentSlide = 0;
+
+        // Initialize storage
+        function initStorage() {
+            if (!localStorage.getItem(STORAGE_KEY)) {
+                const defaultCustomers = [
+                    { id: 1, email: "john@example.com", password: "123456", name: "John Doe", phone: "71234567", orders: [] }
+                ];
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultCustomers));
+            }
+        }
+
+        // Check login status
+        function checkLogin() {
+            const savedCustomer = localStorage.getItem(SESSION_KEY);
+            if (savedCustomer) {
+                currentCustomer = JSON.parse(savedCustomer);
+                showDashboard();
+            } else {
+                showAuth();
+            }
+        }
+
+        function showAuth() {
+            document.getElementById('authSection').style.display = 'flex';
+            document.getElementById('dashboard').classList.remove('active');
+        }
+
+        function showDashboard() {
+            document.getElementById('authSection').style.display = 'none';
+            document.getElementById('dashboard').classList.add('active');
+            document.getElementById('welcomeName').innerText = currentCustomer.name;
+            document.getElementById('userNameDisplay').innerHTML = `<i class="fas fa-user"></i> ${currentCustomer.name}`;
+            renderVendors();
+            renderMyOrders();
+        }
+
+        function handleAuth() {
+            const email = document.getElementById('authEmail').value;
+            const password = document.getElementById('authPassword').value;
+            const isLogin = document.getElementById('authBtn').innerText === 'Login';
+
+            if (isLogin) {
+                const customers = JSON.parse(localStorage.getItem(STORAGE_KEY));
+                const customer = customers.find(c => c.email === email && c.password === password);
+                if (customer) {
+                    currentCustomer = customer;
+                    localStorage.setItem(SESSION_KEY, JSON.stringify(customer));
+                    showDashboard();
+                } else {
+                    alert('Invalid email or password');
+                }
+            } else {
+                // Register
+                const customers = JSON.parse(localStorage.getItem(STORAGE_KEY));
+                if (customers.find(c => c.email === email)) {
+                    alert('Email already exists');
+                    return;
+                }
+                const newCustomer = {
+                    id: Date.now(),
+                    email: email,
+                    password: password,
+                    name: email.split('@')[0],
+                    phone: '',
+                    orders: []
+                };
+                customers.push(newCustomer);
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(customers));
+                currentCustomer = newCustomer;
+                localStorage.setItem(SESSION_KEY, JSON.stringify(newCustomer));
+                showDashboard();
+            }
+        }
+
+        function toggleAuthMode() {
+            const isLogin = document.getElementById('authBtn').innerText === 'Login';
+            if (isLogin) {
+                document.getElementById('authTitle').innerText = 'Customer Registration';
+                document.getElementById('authBtn').innerText = 'Register';
+                document.getElementById('switchText').innerHTML = 'Already have an account? <span onclick="toggleAuthMode()">Login</span>';
+            } else {
+                document.getElementById('authTitle').innerText = 'Customer Login';
+                document.getElementById('authBtn').innerText = 'Login';
+                document.getElementById('switchText').innerHTML = 'Don\'t have an account? <span onclick="toggleAuthMode()">Register</span>';
+            }
+            document.getElementById('authEmail').value = '';
+            document.getElementById('authPassword').value = '';
+        }
+
+        function logout() {
+            localStorage.removeItem(SESSION_KEY);
+            currentCustomer = null;
+            showAuth();
+        }
+
+        function renderVendors() {
+            const grid = document.getElementById('vendorsGrid');
+            const searchTerm = document.getElementById('vendorSearch')?.value.toLowerCase() || '';
+            const filtered = vendors.filter(v => v.name.toLowerCase().includes(searchTerm) || v.location.toLowerCase().includes(searchTerm));
+            grid.innerHTML = filtered.map(v => `
+                <div class="vendor-card" onclick="viewVendorMenu(${v.id})">
+                    <i class="fas fa-store" style="font-size: 40px; color: #ff6b35;"></i>
+                    <h3>${v.name}</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> ${v.location}</p>
+                    <button class="btn-primary" onclick="event.stopPropagation(); viewVendorMenu(${v.id})">View Menu</button>
+                </div>
+            `).join('');
+        }
+
+        function filterVendors() { renderVendors(); }
+
+        function showNearbyVendors() {
+            alert("📍 Showing vendors near Gaborone CBD");
+            const nearby = vendors.filter(v => v.location.includes("CBD") || v.location.includes("Fairgrounds"));
+            document.getElementById('vendorsGrid').innerHTML = nearby.map(v => `<div class="vendor-card" onclick="viewVendorMenu(${v.id})"><h3>${v.name}</h3><p>${v.location}</p><button class="btn-primary">View Menu</button></div>`).join('');
+        }
+
+        function viewVendorMenu(vendorId) {
+            const vendor = vendors.find(v => v.id === vendorId);
+            document.getElementById('modalVendorName').innerHTML = vendor.name;
+            document.getElementById('menuItemsList').innerHTML = vendor.menu.map(item => `
+                <div class="menu-item">
+                    <h4>${item.name}</h4>
+                    <p>${item.desc}</p>
+                    <p style="color:#ff6b35; font-weight:bold;">P${item.price}</p>
+                    <button class="btn-primary" onclick="placeOrder(${vendor.id}, '${item.name}', ${item.price})">Order Now</button>
+                </div>
+            `).join('');
+            document.getElementById('menuModal').classList.add('active');
+        }
+
+        function placeOrder(vendorId, itemName, price) {
+            if (!currentCustomer) return;
+            const order = {
+                id: Date.now(),
+                vendorId: vendorId,
+                vendorName: vendors.find(v => v.id === vendorId).name,
+                customerId: currentCustomer.id,
+                customerName: currentCustomer.name,
+                item: itemName,
+                price: price,
+                status: 'pending',
+                timestamp: new Date().toLocaleString()
+            };
+            orders.push(order);
+            
+            // Save to customer's orders
+            const customers = JSON.parse(localStorage.getItem(STORAGE_KEY));
+            const customerIndex = customers.findIndex(c => c.id === currentCustomer.id);
+            customers[customerIndex].orders.push(order);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(customers));
+            
+            alert(`✅ Order placed! Your ${itemName} will be ready soon.`);
+            closeModal();
+            renderMyOrders();
+        }
+
+        function renderMyOrders() {
+            const customerOrders = orders.filter(o => o.customerId === currentCustomer?.id);
+            const grid = document.getElementById('myOrdersGrid');
+            if (!grid) return;
+            grid.innerHTML = customerOrders.map(order => `
+                <div class="order-card" onclick="trackOrder(${order.id})">
+                    <p><strong>${order.item}</strong></p>
+                    <p>From: ${order.vendorName}</p>
+                    <p>Status: <span style="color: ${order.status === 'ready' ? '#4caf50' : '#ff6b35'}">${order.status.toUpperCase()}</span></p>
+                    <p>Time: ${order.timestamp}</p>
+                    <button class="btn-outline" onclick="event.stopPropagation(); trackOrder(${order.id})">Track Order</button>
+                </div>
+            `).join('');
+        }
+
+        function trackOrder(orderId) {
+            const order = orders.find(o => o.id === orderId);
+            if (!order) return;
+            const statuses = ['pending', 'preparing', 'ready'];
+            const currentIndex = statuses.indexOf(order.status);
+            document.getElementById('trackingStatus').innerHTML = `
+                <div class="order-progress">
+                    ${statuses.map((s, i) => `<div class="progress-step ${i <= currentIndex ? 'completed' : ''}">
+                        <div class="step-icon"><i class="fas ${s === 'pending' ? 'fa-clock' : s === 'preparing' ? 'fa-fire' : 'fa-check'}"></i></div>
+                        <p>${s.toUpperCase()}</p>
+                    </div>`).join('')}
+                </div>
+                <p><strong>Item:</strong> ${order.item}</p>
+                <p><strong>Vendor:</strong> ${order.vendorName}</p>
+                <p><strong>Order Time:</strong> ${order.timestamp}</p>
+                <button class="btn-primary" onclick="closeTrackModal()">Close</button>
+            `;
+            document.getElementById('trackModal').classList.add('active');
+        }
+
+        function closeModal() { document.getElementById('menuModal').classList.remove('active'); }
+        function closeTrackModal() { document.getElementById('trackModal').classList.remove('active'); }
+
+        // Carousel
+        function prevSlide() {
+            const track = document.getElementById('carouselTrack');
+            const slides = document.querySelectorAll('.carousel-slide');
+            currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+            track.style.transform = `translateX(-${currentSlide * 100}%)`;
+        }
+        function nextSlide() {
+            const track = document.getElementById('carouselTrack');
+            const slides = document.querySelectorAll('.carousel-slide');
+            currentSlide = (currentSlide + 1) % slides.length;
+            track.style.transform = `translateX(-${currentSlide * 100}%)`;
+        }
+        setInterval(nextSlide, 5000);
+
+        // Init
+        initStorage();
+        checkLogin();
+    </script>
+</body>
+</html>
