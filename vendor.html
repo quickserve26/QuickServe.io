@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>QuickServe - Vendor Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #2a2a2a; }
+        ::-webkit-scrollbar-thumb { background: #ff6b35; border-radius: 4px; }
+
+        .navbar {
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 107, 53, 0.3);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .logo:hover { transform: scale(1.05); }
+        .logo-icon {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #ff6b35, #ff8c5a);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: #000;
+        }
+        .logo-text {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ff6b35, #ffaa7a);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .logout-btn {
+            background: rgba(255, 107, 53, 0.2);
+            border: 1px solid #ff6b35;
+            padding: 8px 20px;
+            border-radius: 40px;
+            color: #ff6b35;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .logout-btn:hover { background: #ff6b35; color: #000; transform: scale(1.05); }
+
+        .container { max-width: 1400px; margin: 0 auto; padding: 30px 5%; }
+
+        /* Auth */
+        .auth-container { display: flex; justify-content: center; align-items: center; min-height: 80vh; }
+        .auth-card {
+            background: rgba(30, 30, 30, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            padding: 40px;
+            width: 100%;
+            max-width: 450px;
+            border: 1px solid rgba(255, 107, 53, 0.3);
+            transition: all 0.4s ease;
+        }
+        .auth-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(255, 107, 53, 0.2); border-color: #ff6b35; }
+        .auth-card h2 { text-align: center; margin-bottom: 30px; color: #ff6b35; }
+        .auth-input {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 20px;
+            background: #1e1e1e;
+            border: 1px solid #333;
+            border-radius: 12px;
+            color: white;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        .auth-input:focus { outline: none; border-color: #ff6b35; box-shadow: 0 0 10px rgba(255, 107, 53, 0.3); transform: scale(1.02); }
+        .auth-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #ff6b35, #ff8c5a);
+            border: none;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #000;
+        }
+        .auth-btn:hover { transform: scale(1.02); box-shadow: 0 5px 20px rgba(255, 107, 53, 0.4); }
+        .auth-switch { text-align: center; margin-top: 20px; color: #aaa; }
+        .auth-switch span { color: #ff6b35; cursor: pointer; text-decoration: underline; }
+
+        /* Dashboard */
+        .dashboard { display: none; }
+        .dashboard.active { display: block; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .card {
+            background: rgba(30, 30, 30, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255, 107, 53, 0.2);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 107, 53, 0.1), transparent);
+            transition: left 0.6s ease;
+        }
+        .card:hover { transform: translateY(-10px) scale(1.02); border-color: rgba(255, 107, 53, 0.6); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4); }
+        .card:hover::before { left: 100%; }
+
+        .goal-card {
+            background: linear-gradient(135deg, #ff6b3520, #ff8c5a20);
+            border-radius: 24px;
+            padding: 25px;
+            text-align: center;
+            border: 1px solid #ff6b35;
+        }
+        .goal-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: conic-gradient(#ff6b35 0deg, #333 0deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px auto;
+            transition: all 0.5s ease;
+        }
+        .goal-circle:hover { transform: rotate(360deg) scale(1.05); }
+        .goal-inner {
+            width: 120px;
+            height: 120px;
+            background: #1a1a1a;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px; margin-top: 20px; }
+        .stat-card { background: #1a1a1a; border-radius: 16px; padding: 20px; text-align: center; transition: all 0.3s ease; }
+        .stat-card:hover { transform: translateY(-5px); border-radius: 30px 16px 30px 16px; background: #252525; }
+        .stat-number { font-size: 36px; font-weight: 800; color: #ff6b35; }
+        .menu-grid, .orders-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; margin-top: 20px; }
+        .menu-item, .order-card {
+            background: #252525;
+            border-radius: 16px;
+            padding: 20px;
+            transition: all 0.4s ease;
+        }
+        .menu-item:hover, .order-card:hover {
+            border-radius: 40px 16px 40px 16px;
+            background: linear-gradient(135deg, #2a2a2a, #1f1f1f);
+            transform: translateX(8px);
+            box-shadow: -8px 8px 20px rgba(255, 107, 53, 0.3);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #ff6b35, #ff8c5a);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #000;
+        }
+        .btn-primary:hover { transform: scale(1.05) translateY(-2px); box-shadow: 0 5px 15px rgba(255, 107, 53, 0.4); }
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #ff6b35;
+            padding: 8px 16px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #ff6b35;
+        }
+        .btn-outline:hover { background: #ff6b35; color: #000; transform: scale(1.05); }
+        select {
+            background: #333;
+            color: white;
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px solid #ff6b35;
+            margin: 10px 0;
+        }
+        input { background: #333; border: none; padding: 8px; border-radius: 8px; color: white; margin: 5px 0; }
+        @media (max-width: 768px) { .navbar { flex-direction: column; gap: 15px; } }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo" onclick="window.location.href='index.html'">
+            <div class="logo-icon">QS</div>
+            <div class="logo-text">QuickServe</div>
+        </div>
+        <div id="navUserInfo" style="display: flex; align-items: center; gap: 20px;">
+            <span id="vendorNameDisplay" style="color: #ff6b35;"></span>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Auth Section -->
+        <div id="authSection" class="auth-container">
+            <div class="auth-card">
+                <h2 id="authTitle">Vendor Login</h2>
+                <input type="text" id="authEmail" placeholder="Business Email" class="auth-input">
+                <input type="password" id="authPassword" placeholder="Password" class="auth-input">
+                <button class="auth-btn" onclick="handleAuth()" id="authBtn">Login</button>
+                <div class="auth-switch">
+                    <span id="switchText">Don't have a vendor account? <span onclick="toggleAuthMode()">Register</span></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Vendor Dashboard -->
+        <div id="dashboard" class="dashboard">
+            <!-- Goal Card -->
+            <div class="goal-card">
+                <h3><i class="fas fa-bullseye"></i> Today's Customer Reach Goal</h3>
+                <div class="goal-circle" id="goalCircle">
+                    <div class="goal-inner">
+                        <span id="goalPercentage" style="font-size: 28px; font-weight: bold;">0%</span>
+                        <span>Reached</span>
+                    </div>
+                </div>
+                <p><span id="customersDelivered">0</span> / <span id="goalTarget">50</span> customers delivered</p>
+            </div>
+
+            <!-- Orders Overview -->
+            <div class="card">
+                <h3><i class="fas fa-chart-line"></i> Today's Orders Overview</h3>
+                <div class="stats-grid">
+                    <div class="stat-card"><span class="stat-number" id="pendingOrders">0</span><br>Pending</div>
+                    <div class="stat-card"><span class="stat-number" id="preparingOrders">0</span><br>Preparing</div>
+                    <div class="stat-card"><span class="stat-number" id="readyOrders">0</span><br>Ready</div>
+                </div>
+            </div>
+
+            <!-- Menu Catalog -->
+            <div class="card">
+                <h3><i class="fas fa-utensils"></i> My Menu Catalog</h3>
+                <div class="menu-grid" id="vendorMenuGrid"></div>
+                <button class="btn-primary" onclick="addMenuItem()" style="margin-top: 20px;">+ Add Menu Item</button>
+            </div>
+
+            <!-- Today's Orders -->
+            <div class="card">
+                <h3><i class="fas fa-clock"></i> Today's Orders</h3>
+                <div class="orders-grid" id="vendorOrdersGrid"></div>
+            </div>
+
+            <!-- Order History -->
+            <div class="card">
+                <h3><i class="fas fa-history"></i> Order History</h3>
+                <div id="orderHistoryList"></div>
+            </div>
+
+            <!-- Settings -->
+            <div class="card">
+                <h3><i class="fas fa-cog"></i> Settings</h3>
+                <p>Store Name: <input type="text" id="storeName" style="background:#333; border:none; padding:8px; border-radius:8px; color:white;"></p>
+                <p>Location: <input type="text" id="storeLocation" style="background:#333; border:none; padding:8px; border-radius:8px; color:white;"></p>
+                <p>Daily Goal: <input type="number" id="dailyGoal" style="background:#333; border:none; padding:8px; border-radius:8px; color:white;"></p>
+                <button class="btn-primary" onclick="updateVendorSettings()">Save Settings</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const VENDOR_STORAGE_KEY = 'quickServe_vendors';
+        const VENDOR_SESSION_KEY = 'quickServe_currentVendor';
+
+        let currentVendor = null;
+        let allOrders = [];
+
+        function initStorage() {
+            if (!localStorage.getItem(VENDOR_STORAGE_KEY)) {
+                const defaultVendors = [
+                    { id: 1, email: "mama@kitchen.com", password: "123456", name: "Mama's Kitchen", location: "Gaborone CBD", dailyGoal: 50, deliveredToday: 12, menu: [{name: "Beef Stew", price: 35, desc: "Tender beef with rice"}, {name: "Grilled Chicken", price: 45, desc: "With chips and salad"}], orders: [], orderHistory: [] },
+                    { id: 2, email: "tasty@bites.com", password: "123456", name: "Tasty Bites", location: "UB Campus", dailyGoal: 40, deliveredToday: 8, menu: [{name: "Burger", price: 30, desc: "Beef burger with fries"}, {name: "Pizza Slice", price: 25, desc: "Cheese and pepperoni"}], orders: [], orderHistory: [] }
+                ];
+                localStorage.setItem(VENDOR_STORAGE_KEY, JSON.stringify(defaultVendors));
+            }
+        }
+
+        function checkLogin() {
+            const saved = localStorage.getItem(VENDOR_SESSION_KEY);
+            if (saved) {
+                currentVendor = JSON.parse(saved);
+                loadVendorOrders();
+                showDashboard();
+            } else {
+                showAuth();
+            }
+        }
+
+        function loadVendorOrders() {
+            const allOrdersStorage = localStorage.getItem('quickServe_allOrders');
+            if (allOrdersStorage) {
+                allOrders = JSON.parse(allOrdersStorage);
+                if (currentVendor) {
+                    currentVendor.orders = allOrders.filter(o => o.vendorId === currentVendor.id && !o.completed);
+                    currentVendor.orderHistory = allOrders.filter(o => o.vendorId === currentVendor.id && o.completed);
+                }
+            }
+        }
+
+        function saveOrders() {
+            localStorage.setItem('quickServe_allOrders', JSON.stringify(allOrders));
+        }
+
+        function showAuth() {
+            document.getElementById('authSection').style.display = 'flex';
+            document.getElementById('dashboard').classList.remove('active');
+        }
+
+        function showDashboard() {
+            document.getElementById('authSection').style.display = 'none';
+            document.getElementById('dashboard').classList.add('active');
+            document.getElementById('vendorNameDisplay').innerHTML = `<i class="fas fa-store"></i> ${currentVendor.name}`;
+            document.getElementById('storeName').value = currentVendor.name;
+            document.getElementById('storeLocation').value = currentVendor.location;
+            document.getElementById('dailyGoal').value = currentVendor.dailyGoal;
+            renderVendorDashboard();
+        }
+
+        function handleAuth() {
+            const email = document.getElementById('authEmail').value;
+            const password = document.getElementById('authPassword').value;
+            const isLogin = document.getElementById('authBtn').innerText === 'Login';
+
+            const vendors = JSON.parse(localStorage.getItem(VENDOR_STORAGE_KEY));
+
+            if (isLogin) {
+                const vendor = vendors.find(v => v.email === email && v.password === password);
+                if (vendor) {
+                    currentVendor = vendor;
+                    localStorage.setItem(VENDOR_SESSION_KEY, JSON.stringify(vendor));
+                    loadVendorOrders();
+                    showDashboard();
+                } else {
+                    alert('Invalid email or password');
+                }
+            } else {
+                if (vendors.find(v => v.email === email)) {
+                    alert('Email already exists');
+                    return;
+                }
+                const newVendor = {
+                    id: Date.now(),
+                    email: email,
+                    password: password,
+                    name: email.split('@')[0],
+                    location: "",
+                    dailyGoal: 50,
+                    deliveredToday: 0,
+                    menu: [],
+                    orders: [],
+                    orderHistory: []
+                };
+                vendors.push(newVendor);
+                localStorage.setItem(VENDOR_STORAGE_KEY, JSON.stringify(vendors));
+                currentVendor = newVendor;
+                localStorage.setItem(VENDOR_SESSION_KEY, JSON.stringify(newVendor));
+                showDashboard();
+            }
+        }
+
+        function toggleAuthMode() {
+            const isLogin = document.getElementById('authBtn').innerText === 'Login';
+            if (isLogin) {
+                document.getElementById('authTitle').innerText = 'Vendor Registration';
+                document.getElementById('authBtn').innerText = 'Register';
+                document.getElementById('switchText').innerHTML = 'Already have an account? <span onclick="toggleAuthMode()">Login</span>';
+            } else {
+                document.getElementById('authTitle').innerText = 'Vendor Login';
+                document.getElementById('authBtn').innerText = 'Login';
+                document.getElementById('switchText').innerHTML = 'Don\'t have a vendor account? <span onclick="toggleAuthMode()">Register</span>';
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem(VENDOR_SESSION_KEY);
+            currentVendor = null;
+            showAuth();
+        }
+
+        function renderVendorDashboard() {
+            if (!currentVendor) return;
+
+            // Goal
+            const percentage = Math.min(100, Math.floor((currentVendor.deliveredToday / currentVendor.dailyGoal) * 100));
+            document.getElementById('goalPercentage').innerHTML = `${percentage}%`;
+            document.getElementById('customersDelivered').innerHTML = currentVendor.deliveredToday;
+            document.getElementById('goalTarget').innerHTML = currentVendor.dailyGoal;
+            const angle = (percentage / 100) * 360;
+            document.getElementById('goalCircle').style.background = `conic-gradient(#ff6b35 ${angle}deg, #333 ${angle}deg)`;
+
+            // Order counts
+            const pending = currentVendor.orders.filter(o => o.status === 'pending').length;
+            const preparing = currentVendor.orders.filter(o => o.status === 'preparing').length;
+            const ready = currentVendor.orders.filter(o => o.status === 'ready').length;
+            document.getElementById('pendingOrders').innerHTML = pending;
+            document.getElementById('preparingOrders').innerHTML = preparing;
+            document.getElementById('readyOrders').innerHTML = ready;
+
+            // Menu
+            document.getElementById('vendorMenuGrid').innerHTML = currentVendor.menu.map((item, idx) => `
+                <div class="menu-item">
+                    <h4>${item.name}</h4>
+                    <p>P${item.price}</p>
+                    <p style="font-size:12px; color:#aaa;">${item.desc}</p>
+                    <button class="btn-outline" onclick="deleteMenuItem(${idx})">Remove</button>
+                </div>
+            `).join('');
+
+            // Today's Orders
+            document.getElementById('vendorOrdersGrid').innerHTML = currentVendor.orders.map(order => `
+                <div class="order-card">
+                    <p><strong>${order.item}</strong></p>
+                    <p>Customer: ${order.customerName}</p>
+                    <p>Status: <span style="color: ${order.status === 'ready' ? '#4caf50' : '#ff6b35'}">${order.status}</span></p>
+                    <select onchange="updateOrderStatus(${order.id}, this.value)">
+                        <option ${order.status === 'pending' ? 'selected' : ''}>pending</option>
+                        <option ${order.status === 'preparing' ? 'selected' : ''}>preparing</option>
+                        <option ${order.status === 'ready' ? 'selected' : ''}>ready</option>
+                    </select>
+                    <button class="btn-primary" onclick="markDelivered(${order.id})">Mark Delivered</button>
+                </div>
+            `).join('');
+
+            // History
+            document.getElementById('orderHistoryList').innerHTML = currentVendor.orderHistory.slice(0, 10).map(h => `
+                <div style="padding: 10px; border-bottom: 1px solid #333;">
+                    ${h.item} - ${h.customerName} - ${h.timestamp}
+                </div>
+            `).join('') || '<p>No history yet</p>';
+        }
+
+        function updateOrderStatus(orderId, status) {
+            const order = currentVendor.orders.find(o => o.id === orderId);
+            if (order) {
+                order.status = status;
+                const globalOrder = allOrders.find(o => o.id === orderId);
+                if (globalOrder) globalOrder.status = status;
+                saveOrders();
+                renderVendorDashboard();
+            }
+        }
+
+        function markDelivered(orderId) {
+            const index = currentVendor.orders.findIndex(o => o.id === orderId);
+            if (index !== -1) {
+                const completed = currentVendor.orders[index];
+                completed.completed = true;
+                completed.completedAt = new Date().toLocaleString();
+                completed.status = 'completed';
+                currentVendor.orderHistory.unshift(completed);
+                currentVendor.deliveredToday++;
+                currentVendor.orders.splice(index, 1);
+                
+                const globalIndex = allOrders.findIndex(o => o.id === orderId);
+                if (globalIndex !== -1) {
+                    allOrders[globalIndex].completed = true;
+                    allOrders[globalIndex].status = 'completed';
+                }
+                saveOrders();
+                renderVendorDashboard();
+                alert('✅ Order marked as delivered!');
+            }
+        }
+
+        function addMenuItem() {
+            const name = prompt("Enter item name:");
+            const price = parseFloat(prompt("Enter price (P):"));
+            const desc = prompt("Enter description:");
+            if (name && price) {
+                currentVendor.menu.push({ name, price, desc: desc || "" });
+                updateVendorInStorage();
+                renderVendorDashboard();
+            }
+        }
+
+        function deleteMenuItem(index) {
+            currentVendor.menu.splice(index, 1);
+            updateVendorInStorage();
+            renderVendorDashboard();
+        }
+
+        function updateVendorSettings() {
+            currentVendor.name = document.getElementById('storeName').value;
+            currentVendor.location = document.getElementById('storeLocation').value;
+            currentVendor.dailyGoal = parseInt(document.getElementById('dailyGoal').value);
+            updateVendorInStorage();
+            renderVendorDashboard();
+            alert('Settings saved!');
+        }
+
+        function updateVendorInStorage() {
+            const vendors = JSON.parse(localStorage.getItem(VENDOR_STORAGE_KEY));
+            const index = vendors.findIndex(v => v.id === currentVendor.id);
+            if (index !== -1) {
+                vendors[index] = currentVendor;
+                localStorage.setItem(VENDOR_STORAGE_KEY, JSON.stringify(vendors));
+                localStorage.setItem(VENDOR_SESSION_KEY, JSON.stringify(currentVendor));
+            }
+        }
+
+        initStorage();
+        checkLogin();
+    </script>
+</body>
+</html>
