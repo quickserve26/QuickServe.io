@@ -194,21 +194,25 @@
             flex: 1;
             min-width: 300px;
             text-align: center;
+            position: relative;
         }
 
+        /* Floating Circle with Black Background and Orange Shadow */
         .floating-logo {
             width: 280px;
             height: 280px;
-            background: linear-gradient(135deg, #ff6b35, #ff8c5a);
+            background: #000000;  /* Black background */
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             margin: 0 auto;
             animation: float 3s ease-in-out infinite;
-            box-shadow: 0 0 50px rgba(255, 107, 53, 0.3);
+            box-shadow: 0 0 30px rgba(255, 107, 53, 0.7), 0 0 15px rgba(255, 107, 53, 0.5);
             cursor: pointer;
             overflow: hidden;
+            position: relative;
+            border: 2px solid rgba(255, 107, 53, 0.5);
         }
 
         .floating-logo img {
@@ -216,12 +220,6 @@
             height: 100%;
             object-fit: cover;
             border-radius: 50%;
-        }
-
-        .floating-logo span {
-            font-size: 100px;
-            font-weight: bold;
-            color: white;
         }
 
         @keyframes float {
@@ -334,9 +332,11 @@
                 </div>
             </div>
         </div>
-           <div class="floating-logo" id="floatingLogo">
-              <img src="Resources/QuickServe logo with cloche and food.png" alt="QuickServe Logo">
+        <div class="hero-image">
+            <div class="floating-logo">
+                <img src="Resources/QuickServe logo with cloche and food.png" alt="QuickServe Logo">
             </div>
+        </div>
     </div>
 
     <div class="features">
@@ -368,13 +368,5 @@
     <div class="footer">
         <p>&copy; 2024 QuickServe - Bridging the Gap Between Vendors and Customers</p>
     </div>
-
-    <script>
-        // Load saved logo if exists
-        const savedLogo = localStorage.getItem('quickServe_logo');
-        if (savedLogo) {
-            document.getElementById('floatingLogo').innerHTML = `<img src="${savedLogo}" alt="QuickServe Logo">`;
-        }
-    </script>
 </body>
-</html>
+                        </html>
