@@ -15,17 +15,17 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            background: #0a0a0a;
             color: #ffffff;
             overflow-x: hidden;
         }
 
         ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #2a2a2a; }
+        ::-webkit-scrollbar-track { background: #1a1a1a; }
         ::-webkit-scrollbar-thumb { background: #ff6b35; border-radius: 4px; }
 
         .navbar {
-            background: rgba(0, 0, 0, 0.95);
+            background: rgba(10, 10, 10, 0.95);
             backdrop-filter: blur(10px);
             padding: 1rem 5%;
             display: flex;
@@ -34,7 +34,7 @@
             position: sticky;
             top: 0;
             z-index: 1000;
-            border-bottom: 1px solid rgba(255, 107, 53, 0.3);
+            border-bottom: 2px solid #ff6b35;
         }
 
         .logo {
@@ -55,7 +55,7 @@
             justify-content: center;
             font-size: 24px;
             font-weight: bold;
-            color: #000;
+            color: white;
         }
         .logo-text {
             font-size: 28px;
@@ -66,23 +66,22 @@
             color: transparent;
         }
         .logout-btn {
-            background: rgba(255, 107, 53, 0.2);
-            border: 1px solid #ff6b35;
+            background: #ff6b35;
+            border: none;
             padding: 8px 20px;
             border-radius: 40px;
-            color: #ff6b35;
+            color: white;
             cursor: pointer;
             transition: all 0.3s ease;
         }
-        .logout-btn:hover { background: #ff6b35; color: #000; transform: scale(1.05); }
+        .logout-btn:hover { background: #e55a2a; transform: scale(1.05); }
 
         .container { max-width: 1400px; margin: 0 auto; padding: 30px 5%; }
 
         /* Auth */
         .auth-container { display: flex; justify-content: center; align-items: center; min-height: 80vh; }
         .auth-card {
-            background: rgba(30, 30, 30, 0.95);
-            backdrop-filter: blur(10px);
+            background: #1a1a1a;
             border-radius: 30px;
             padding: 40px;
             width: 100%;
@@ -96,14 +95,14 @@
             width: 100%;
             padding: 15px;
             margin-bottom: 20px;
-            background: #1e1e1e;
+            background: #252525;
             border: 1px solid #333;
             border-radius: 12px;
             color: white;
             font-size: 16px;
             transition: all 0.3s ease;
         }
-        .auth-input:focus { outline: none; border-color: #ff6b35; box-shadow: 0 0 10px rgba(255, 107, 53, 0.3); transform: scale(1.02); }
+        .auth-input:focus { outline: none; border-color: #ff6b35; box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.2); }
         .auth-btn {
             width: 100%;
             padding: 14px;
@@ -113,10 +112,10 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            color: #000;
+            color: white;
         }
-        .auth-btn:hover { transform: scale(1.02); box-shadow: 0 5px 20px rgba(255, 107, 53, 0.4); }
-        .auth-switch { text-align: center; margin-top: 20px; color: #aaa; }
+        .auth-btn:hover { transform: scale(1.02); box-shadow: 0 5px 20px rgba(255, 107, 53, 0.3); }
+        .auth-switch { text-align: center; margin-top: 20px; color: #888; }
         .auth-switch span { color: #ff6b35; cursor: pointer; text-decoration: underline; }
 
         /* Dashboard */
@@ -125,12 +124,11 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
         .card {
-            background: rgba(30, 30, 30, 0.8);
-            backdrop-filter: blur(10px);
+            background: #1a1a1a;
             border-radius: 20px;
             padding: 25px;
             margin-bottom: 25px;
-            border: 1px solid rgba(255, 107, 53, 0.2);
+            border: 1px solid #2a2a2a;
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
             overflow: hidden;
@@ -145,7 +143,7 @@
             background: linear-gradient(90deg, transparent, rgba(255, 107, 53, 0.1), transparent);
             transition: left 0.6s ease;
         }
-        .card:hover { transform: translateY(-10px) scale(1.02); border-color: rgba(255, 107, 53, 0.6); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4); }
+        .card:hover { transform: translateY(-10px); border-color: #ff6b35; box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
         .card:hover::before { left: 100%; }
 
         .goal-card {
@@ -178,8 +176,8 @@
             justify-content: center;
         }
         .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px; margin-top: 20px; }
-        .stat-card { background: #1a1a1a; border-radius: 16px; padding: 20px; text-align: center; transition: all 0.3s ease; }
-        .stat-card:hover { transform: translateY(-5px); border-radius: 30px 16px 30px 16px; background: #252525; }
+        .stat-card { background: #252525; border-radius: 16px; padding: 20px; text-align: center; transition: all 0.3s ease; }
+        .stat-card:hover { transform: translateY(-5px); border-radius: 30px 16px 30px 16px; background: #2a2a2a; }
         .stat-number { font-size: 36px; font-weight: 800; color: #ff6b35; }
         .menu-grid, .orders-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; margin-top: 20px; }
         .menu-item, .order-card {
@@ -194,6 +192,13 @@
             transform: translateX(8px);
             box-shadow: -8px 8px 20px rgba(255, 107, 53, 0.3);
         }
+        .meal-image-preview {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            object-fit: cover;
+            margin-right: 15px;
+        }
         .btn-primary {
             background: linear-gradient(135deg, #ff6b35, #ff8c5a);
             border: none;
@@ -202,7 +207,7 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            color: #000;
+            color: white;
         }
         .btn-primary:hover { transform: scale(1.05) translateY(-2px); box-shadow: 0 5px 15px rgba(255, 107, 53, 0.4); }
         .btn-outline {
@@ -215,7 +220,7 @@
             transition: all 0.3s ease;
             color: #ff6b35;
         }
-        .btn-outline:hover { background: #ff6b35; color: #000; transform: scale(1.05); }
+        .btn-outline:hover { background: #ff6b35; color: white; transform: scale(1.05); }
         select {
             background: #333;
             color: white;
@@ -224,7 +229,24 @@
             border: 1px solid #ff6b35;
             margin: 10px 0;
         }
-        input { background: #333; border: none; padding: 8px; border-radius: 8px; color: white; margin: 5px 0; }
+        input, textarea {
+            background: #252525;
+            border: 1px solid #333;
+            padding: 8px;
+            border-radius: 8px;
+            color: white;
+            margin: 5px 0;
+        }
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #ff6b35;
+        }
+        .flex-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
         @media (max-width: 768px) { .navbar { flex-direction: column; gap: 15px; } }
     </style>
 </head>
@@ -234,7 +256,7 @@
             <div class="logo-icon">QS</div>
             <div class="logo-text">QuickServe</div>
         </div>
-        <div id="navUserInfo" style="display: flex; align-items: center; gap: 20px;">
+        <div style="display: flex; align-items: center; gap: 20px;">
             <span id="vendorNameDisplay" style="color: #ff6b35;"></span>
             <button class="logout-btn" onclick="logout()">Logout</button>
         </div>
@@ -256,6 +278,11 @@
 
         <!-- Vendor Dashboard -->
         <div id="dashboard" class="dashboard">
+            <!-- Subscription Status Warning -->
+            <div id="subscriptionWarning" style="display: none; background: #ff4444; padding: 15px; border-radius: 12px; margin-bottom: 20px; text-align: center;">
+                <i class="fas fa-exclamation-triangle"></i> Your subscription has expired. Please contact admin to reactivate your account.
+            </div>
+
             <!-- Goal Card -->
             <div class="goal-card">
                 <h3><i class="fas fa-bullseye"></i> Today's Customer Reach Goal</h3>
@@ -300,9 +327,10 @@
             <!-- Settings -->
             <div class="card">
                 <h3><i class="fas fa-cog"></i> Settings</h3>
-                <p>Store Name: <input type="text" id="storeName" style="background:#333; border:none; padding:8px; border-radius:8px; color:white;"></p>
-                <p>Location: <input type="text" id="storeLocation" style="background:#333; border:none; padding:8px; border-radius:8px; color:white;"></p>
-                <p>Daily Goal: <input type="number" id="dailyGoal" style="background:#333; border:none; padding:8px; border-radius:8px; color:white;"></p>
+                <p>Store Name: <input type="text" id="storeName" style="width:100%;"></p>
+                <p>Location: <input type="text" id="storeLocation" style="width:100%;" placeholder="e.g., Gaborone CBD, UB Campus, Fairgrounds"></p>
+                <p>Phone Number: <input type="text" id="storePhone" style="width:100%;" placeholder="e.g., 71234567"></p>
+                <p>Daily Goal (customers): <input type="number" id="dailyGoal" style="width:100%;"></p>
                 <button class="btn-primary" onclick="updateVendorSettings()">Save Settings</button>
             </div>
         </div>
@@ -311,44 +339,45 @@
     <script>
         const VENDOR_STORAGE_KEY = 'quickServe_vendors';
         const VENDOR_SESSION_KEY = 'quickServe_currentVendor';
+        const ORDERS_KEY = 'quickServe_allOrders';
 
         let currentVendor = null;
-        let allOrders = [];
 
         function initStorage() {
             if (!localStorage.getItem(VENDOR_STORAGE_KEY)) {
                 const defaultVendors = [
-                    { id: 1, email: "mama@kitchen.com", password: "123456", name: "Mama's Kitchen", location: "Gaborone CBD", dailyGoal: 50, deliveredToday: 12, menu: [{name: "Beef Stew", price: 35, desc: "Tender beef with rice"}, {name: "Grilled Chicken", price: 45, desc: "With chips and salad"}], orders: [], orderHistory: [] },
-                    { id: 2, email: "tasty@bites.com", password: "123456", name: "Tasty Bites", location: "UB Campus", dailyGoal: 40, deliveredToday: 8, menu: [{name: "Burger", price: 30, desc: "Beef burger with fries"}, {name: "Pizza Slice", price: 25, desc: "Cheese and pepperoni"}], orders: [], orderHistory: [] }
+                    { id: 1, email: "mama@kitchen.com", password: "123456", name: "Mama's Kitchen", location: "Gaborone CBD", phone: "71234567", dailyGoal: 50, deliveredToday: 12, subscriptionPaid: true, menu: [{name: "Beef Stew", price: 35, desc: "Tender beef with rice", available: true, image: "https://images.unsplash.com/photo-1544025162-d76694265947?w=100"}, {name: "Grilled Chicken", price: 45, desc: "With chips and salad", available: true, image: "https://images.unsplash.com/photo-1562967914-608f82629710?w=100"}], orders: [], orderHistory: [] },
+                    { id: 2, email: "tasty@bites.com", password: "123456", name: "Tasty Bites", location: "UB Campus", phone: "71345678", dailyGoal: 40, deliveredToday: 8, subscriptionPaid: true, menu: [{name: "Burger", price: 30, desc: "Beef burger with fries", available: true, image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=100"}, {name: "Pizza Slice", price: 25, desc: "Cheese and pepperoni", available: true, image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=100"}], orders: [], orderHistory: [] },
+                    { id: 3, email: "spice@corner.com", password: "123456", name: "Spice Corner", location: "Fairgrounds", phone: "71456789", dailyGoal: 60, deliveredToday: 25, subscriptionPaid: false, menu: [{name: "Biryani", price: 50, desc: "Spicy chicken biryani", available: true, image: "https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=100"}, {name: "Samosa", price: 10, desc: "3 pieces", available: true, image: "https://images.unsplash.com/photo-1601050985023-6d6ad8b5b4f4?w=100"}], orders: [], orderHistory: [] }
                 ];
                 localStorage.setItem(VENDOR_STORAGE_KEY, JSON.stringify(defaultVendors));
             }
+            if (!localStorage.getItem(ORDERS_KEY)) {
+                localStorage.setItem(ORDERS_KEY, JSON.stringify([]));
+            }
+        }
+
+        function getAllOrders() {
+            return JSON.parse(localStorage.getItem(ORDERS_KEY)) || [];
+        }
+
+        function saveOrders(orders) {
+            localStorage.setItem(ORDERS_KEY, JSON.stringify(orders));
+        }
+
+        function getVendorOrders() {
+            const allOrders = getAllOrders();
+            return allOrders.filter(o => o.vendorId === currentVendor?.id);
         }
 
         function checkLogin() {
             const saved = localStorage.getItem(VENDOR_SESSION_KEY);
             if (saved) {
                 currentVendor = JSON.parse(saved);
-                loadVendorOrders();
                 showDashboard();
             } else {
                 showAuth();
             }
-        }
-
-        function loadVendorOrders() {
-            const allOrdersStorage = localStorage.getItem('quickServe_allOrders');
-            if (allOrdersStorage) {
-                allOrders = JSON.parse(allOrdersStorage);
-                if (currentVendor) {
-                    currentVendor.orders = allOrders.filter(o => o.vendorId === currentVendor.id && !o.completed);
-                    currentVendor.orderHistory = allOrders.filter(o => o.vendorId === currentVendor.id && o.completed);
-                }
-            }
-        }
-
-        function saveOrders() {
-            localStorage.setItem('quickServe_allOrders', JSON.stringify(allOrders));
         }
 
         function showAuth() {
@@ -361,8 +390,17 @@
             document.getElementById('dashboard').classList.add('active');
             document.getElementById('vendorNameDisplay').innerHTML = `<i class="fas fa-store"></i> ${currentVendor.name}`;
             document.getElementById('storeName').value = currentVendor.name;
-            document.getElementById('storeLocation').value = currentVendor.location;
+            document.getElementById('storeLocation').value = currentVendor.location || '';
+            document.getElementById('storePhone').value = currentVendor.phone || '';
             document.getElementById('dailyGoal').value = currentVendor.dailyGoal;
+            
+            // Show subscription warning if not paid
+            if (!currentVendor.subscriptionPaid) {
+                document.getElementById('subscriptionWarning').style.display = 'block';
+            } else {
+                document.getElementById('subscriptionWarning').style.display = 'none';
+            }
+            
             renderVendorDashboard();
         }
 
@@ -378,7 +416,6 @@
                 if (vendor) {
                     currentVendor = vendor;
                     localStorage.setItem(VENDOR_SESSION_KEY, JSON.stringify(vendor));
-                    loadVendorOrders();
                     showDashboard();
                 } else {
                     alert('Invalid email or password');
@@ -388,14 +425,19 @@
                     alert('Email already exists');
                     return;
                 }
+                const name = prompt("Enter your store name:");
+                const location = prompt("Enter your store location (e.g., Gaborone CBD, UB Campus):");
+                const phone = prompt("Enter your phone number:");
                 const newVendor = {
                     id: Date.now(),
                     email: email,
                     password: password,
-                    name: email.split('@')[0],
-                    location: "",
+                    name: name || email.split('@')[0],
+                    location: location || "",
+                    phone: phone || "",
                     dailyGoal: 50,
                     deliveredToday: 0,
+                    subscriptionPaid: true,
                     menu: [],
                     orders: [],
                     orderHistory: []
@@ -429,7 +471,19 @@
 
         function renderVendorDashboard() {
             if (!currentVendor) return;
+            if (!currentVendor.subscriptionPaid) {
+                document.getElementById('pendingOrders').innerHTML = '0';
+                document.getElementById('preparingOrders').innerHTML = '0';
+                document.getElementById('readyOrders').innerHTML = '0';
+                document.getElementById('vendorMenuGrid').innerHTML = '<p style="color:#ff6b35;">Subscription expired. Please contact admin to renew.</p>';
+                document.getElementById('vendorOrdersGrid').innerHTML = '<p>Subscription expired</p>';
+                document.getElementById('orderHistoryList').innerHTML = '<p>Subscription expired</p>';
+                return;
+            }
 
+            const vendorOrders = getVendorOrders();
+            const activeOrders = vendorOrders.filter(o => o.status !== 'completed');
+            
             // Goal
             const percentage = Math.min(100, Math.floor((currentVendor.deliveredToday / currentVendor.dailyGoal) * 100));
             document.getElementById('goalPercentage').innerHTML = `${percentage}%`;
@@ -439,9 +493,9 @@
             document.getElementById('goalCircle').style.background = `conic-gradient(#ff6b35 ${angle}deg, #333 ${angle}deg)`;
 
             // Order counts
-            const pending = currentVendor.orders.filter(o => o.status === 'pending').length;
-            const preparing = currentVendor.orders.filter(o => o.status === 'preparing').length;
-            const ready = currentVendor.orders.filter(o => o.status === 'ready').length;
+            const pending = activeOrders.filter(o => o.status === 'pending').length;
+            const preparing = activeOrders.filter(o => o.status === 'preparing').length;
+            const ready = activeOrders.filter(o => o.status === 'ready').length;
             document.getElementById('pendingOrders').innerHTML = pending;
             document.getElementById('preparingOrders').innerHTML = preparing;
             document.getElementById('readyOrders').innerHTML = ready;
@@ -449,18 +503,29 @@
             // Menu
             document.getElementById('vendorMenuGrid').innerHTML = currentVendor.menu.map((item, idx) => `
                 <div class="menu-item">
-                    <h4>${item.name}</h4>
-                    <p>P${item.price}</p>
-                    <p style="font-size:12px; color:#aaa;">${item.desc}</p>
-                    <button class="btn-outline" onclick="deleteMenuItem(${idx})">Remove</button>
+                    <div class="flex-row">
+                        ${item.image ? `<img src="${item.image}" class="meal-image-preview" onerror="this.src='https://via.placeholder.com/60?text=Food'">` : ''}
+                        <div style="flex:1;">
+                            <h4>${item.name}</h4>
+                            <p>P${item.price}</p>
+                            <p style="font-size:12px; color:#aaa;">${item.desc || ''}</p>
+                            <p>Status: <span style="color: ${item.available !== false ? '#4caf50' : '#ff4444'}">${item.available !== false ? 'Available' : 'Unavailable'}</span></p>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 10px; margin-top: 10px;">
+                        <button class="btn-outline" onclick="toggleAvailability(${idx})">${item.available !== false ? 'Mark Unavailable' : 'Mark Available'}</button>
+                        <button class="btn-outline" onclick="editMenuItem(${idx})">Edit</button>
+                        <button class="btn-outline" onclick="deleteMenuItem(${idx})">Remove</button>
+                    </div>
                 </div>
             `).join('');
 
             // Today's Orders
-            document.getElementById('vendorOrdersGrid').innerHTML = currentVendor.orders.map(order => `
+            document.getElementById('vendorOrdersGrid').innerHTML = activeOrders.map(order => `
                 <div class="order-card">
                     <p><strong>${order.item}</strong></p>
                     <p>Customer: ${order.customerName}</p>
+                    <p>Amount: P${order.price}</p>
                     <p>Status: <span style="color: ${order.status === 'ready' ? '#4caf50' : '#ff6b35'}">${order.status}</span></p>
                     <select onchange="updateOrderStatus(${order.id}, this.value)">
                         <option ${order.status === 'pending' ? 'selected' : ''}>pending</option>
@@ -469,44 +534,43 @@
                     </select>
                     <button class="btn-primary" onclick="markDelivered(${order.id})">Mark Delivered</button>
                 </div>
-            `).join('');
+            `).join('') || '<p>No orders yet</p>';
 
             // History
-            document.getElementById('orderHistoryList').innerHTML = currentVendor.orderHistory.slice(0, 10).map(h => `
+            const completedOrders = vendorOrders.filter(o => o.status === 'completed');
+            document.getElementById('orderHistoryList').innerHTML = completedOrders.slice(0, 20).map(h => `
                 <div style="padding: 10px; border-bottom: 1px solid #333;">
-                    ${h.item} - ${h.customerName} - ${h.timestamp}
+                    ${h.item} - ${h.customerName} - P${h.price} - ${h.timestamp}
                 </div>
             `).join('') || '<p>No history yet</p>';
         }
 
+        function toggleAvailability(index) {
+            if (currentVendor.menu[index]) {
+                currentVendor.menu[index].available = currentVendor.menu[index].available === false ? true : false;
+                updateVendorInStorage();
+                renderVendorDashboard();
+            }
+        }
+
         function updateOrderStatus(orderId, status) {
-            const order = currentVendor.orders.find(o => o.id === orderId);
+            const orders = getAllOrders();
+            const order = orders.find(o => o.id === orderId);
             if (order) {
                 order.status = status;
-                const globalOrder = allOrders.find(o => o.id === orderId);
-                if (globalOrder) globalOrder.status = status;
-                saveOrders();
+                saveOrders(orders);
                 renderVendorDashboard();
             }
         }
 
         function markDelivered(orderId) {
-            const index = currentVendor.orders.findIndex(o => o.id === orderId);
-            if (index !== -1) {
-                const completed = currentVendor.orders[index];
-                completed.completed = true;
-                completed.completedAt = new Date().toLocaleString();
-                completed.status = 'completed';
-                currentVendor.orderHistory.unshift(completed);
+            const orders = getAllOrders();
+            const orderIndex = orders.findIndex(o => o.id === orderId);
+            if (orderIndex !== -1) {
+                orders[orderIndex].status = 'completed';
+                saveOrders(orders);
                 currentVendor.deliveredToday++;
-                currentVendor.orders.splice(index, 1);
-                
-                const globalIndex = allOrders.findIndex(o => o.id === orderId);
-                if (globalIndex !== -1) {
-                    allOrders[globalIndex].completed = true;
-                    allOrders[globalIndex].status = 'completed';
-                }
-                saveOrders();
+                updateVendorInStorage();
                 renderVendorDashboard();
                 alert('✅ Order marked as delivered!');
             }
@@ -514,24 +578,48 @@
 
         function addMenuItem() {
             const name = prompt("Enter item name:");
+            if (!name) return;
             const price = parseFloat(prompt("Enter price (P):"));
             const desc = prompt("Enter description:");
-            if (name && price) {
-                currentVendor.menu.push({ name, price, desc: desc || "" });
+            const imageUrl = prompt("Enter image URL (optional - leave blank for default):");
+            
+            currentVendor.menu.push({ 
+                name, 
+                price, 
+                desc: desc || "", 
+                available: true,
+                image: imageUrl || "https://via.placeholder.com/60?text=Food"
+            });
+            updateVendorInStorage();
+            renderVendorDashboard();
+        }
+
+        function editMenuItem(index) {
+            const item = currentVendor.menu[index];
+            const newName = prompt("Edit item name:", item.name);
+            if (newName) item.name = newName;
+            const newPrice = parseFloat(prompt("Edit price:", item.price));
+            if (!isNaN(newPrice)) item.price = newPrice;
+            const newDesc = prompt("Edit description:", item.desc);
+            if (newDesc !== null) item.desc = newDesc;
+            const newImage = prompt("Edit image URL:", item.image);
+            if (newImage !== null) item.image = newImage;
+            updateVendorInStorage();
+            renderVendorDashboard();
+        }
+
+        function deleteMenuItem(index) {
+            if (confirm('Remove this item from menu?')) {
+                currentVendor.menu.splice(index, 1);
                 updateVendorInStorage();
                 renderVendorDashboard();
             }
         }
 
-        function deleteMenuItem(index) {
-            currentVendor.menu.splice(index, 1);
-            updateVendorInStorage();
-            renderVendorDashboard();
-        }
-
         function updateVendorSettings() {
             currentVendor.name = document.getElementById('storeName').value;
             currentVendor.location = document.getElementById('storeLocation').value;
+            currentVendor.phone = document.getElementById('storePhone').value;
             currentVendor.dailyGoal = parseInt(document.getElementById('dailyGoal').value);
             updateVendorInStorage();
             renderVendorDashboard();
