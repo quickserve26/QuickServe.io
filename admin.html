@@ -11,16 +11,16 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            background: #0a0a0a;
             color: #ffffff;
             overflow-x: hidden;
         }
         ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #2a2a2a; }
+        ::-webkit-scrollbar-track { background: #1a1a1a; }
         ::-webkit-scrollbar-thumb { background: #ff6b35; border-radius: 4px; }
 
         .navbar {
-            background: rgba(0, 0, 0, 0.95);
+            background: rgba(10, 10, 10, 0.95);
             backdrop-filter: blur(10px);
             padding: 1rem 5%;
             display: flex;
@@ -29,7 +29,7 @@
             position: sticky;
             top: 0;
             z-index: 1000;
-            border-bottom: 1px solid rgba(255, 107, 53, 0.3);
+            border-bottom: 2px solid #ff6b35;
         }
         .logo {
             display: flex;
@@ -49,7 +49,7 @@
             justify-content: center;
             font-size: 24px;
             font-weight: bold;
-            color: #000;
+            color: white;
         }
         .logo-text {
             font-size: 28px;
@@ -60,23 +60,22 @@
             color: transparent;
         }
         .logout-btn {
-            background: rgba(255, 107, 53, 0.2);
-            border: 1px solid #ff6b35;
+            background: #ff6b35;
+            border: none;
             padding: 8px 20px;
             border-radius: 40px;
-            color: #ff6b35;
+            color: white;
             cursor: pointer;
             transition: all 0.3s ease;
         }
-        .logout-btn:hover { background: #ff6b35; color: #000; transform: scale(1.05); }
+        .logout-btn:hover { background: #e55a2a; transform: scale(1.05); }
 
         .container { max-width: 1400px; margin: 0 auto; padding: 30px 5%; }
 
         /* Auth */
         .auth-container { display: flex; justify-content: center; align-items: center; min-height: 80vh; }
         .auth-card {
-            background: rgba(30, 30, 30, 0.95);
-            backdrop-filter: blur(10px);
+            background: #1a1a1a;
             border-radius: 30px;
             padding: 40px;
             width: 100%;
@@ -90,14 +89,14 @@
             width: 100%;
             padding: 15px;
             margin-bottom: 20px;
-            background: #1e1e1e;
+            background: #252525;
             border: 1px solid #333;
             border-radius: 12px;
             color: white;
             font-size: 16px;
             transition: all 0.3s ease;
         }
-        .auth-input:focus { outline: none; border-color: #ff6b35; box-shadow: 0 0 10px rgba(255, 107, 53, 0.3); }
+        .auth-input:focus { outline: none; border-color: #ff6b35; box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.2); }
         .auth-btn {
             width: 100%;
             padding: 14px;
@@ -107,9 +106,9 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            color: #000;
+            color: white;
         }
-        .auth-btn:hover { transform: scale(1.02); box-shadow: 0 5px 20px rgba(255, 107, 53, 0.4); }
+        .auth-btn:hover { transform: scale(1.02); box-shadow: 0 5px 20px rgba(255, 107, 53, 0.3); }
 
         /* Dashboard */
         .dashboard { display: none; }
@@ -117,12 +116,11 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
         .card {
-            background: rgba(30, 30, 30, 0.8);
-            backdrop-filter: blur(10px);
+            background: #1a1a1a;
             border-radius: 20px;
             padding: 25px;
             margin-bottom: 25px;
-            border: 1px solid rgba(255, 107, 53, 0.2);
+            border: 1px solid #2a2a2a;
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
             overflow: hidden;
@@ -137,7 +135,7 @@
             background: linear-gradient(90deg, transparent, rgba(255, 107, 53, 0.1), transparent);
             transition: left 0.6s ease;
         }
-        .card:hover { transform: translateY(-10px) scale(1.02); border-color: rgba(255, 107, 53, 0.6); }
+        .card:hover { transform: translateY(-5px); border-color: #ff6b35; }
         .card:hover::before { left: 100%; }
 
         .stats-grid {
@@ -147,16 +145,17 @@
             margin-bottom: 30px;
         }
         .stat-card {
-            background: linear-gradient(135deg, #1e1e1e, #252525);
+            background: linear-gradient(135deg, #1a1a1a, #252525);
             border-radius: 20px;
             padding: 25px;
             text-align: center;
             transition: all 0.4s ease;
+            border: 1px solid #333;
         }
         .stat-card:hover {
-            transform: translateY(-5px) scale(1.02);
+            transform: translateY(-5px);
             border-radius: 40px 20px 40px 20px;
-            box-shadow: 0 10px 30px rgba(255,107,53,0.3);
+            border-color: #ff6b35;
         }
         .stat-number { font-size: 42px; font-weight: 800; color: #ff6b35; }
 
@@ -169,7 +168,20 @@
             text-align: left;
             border-bottom: 1px solid #333;
         }
-        .vendor-table tr:hover { background: #2a2a2a; }
+        .vendor-table tr:hover { background: #252525; }
+
+        .customer-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .customer-item {
+            padding: 12px;
+            border-bottom: 1px solid #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .customer-item:hover { background: #252525; }
 
         .btn-primary {
             background: linear-gradient(135deg, #ff6b35, #ff8c5a);
@@ -179,7 +191,7 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            color: #000;
+            color: white;
         }
         .btn-primary:hover { transform: scale(1.05); }
         .btn-outline {
@@ -192,7 +204,28 @@
             transition: all 0.3s ease;
             color: #ff6b35;
         }
-        .btn-outline:hover { background: #ff6b35; color: #000; }
+        .btn-outline:hover { background: #ff6b35; color: white; }
+        .btn-danger {
+            background: #ff4444;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+        }
+        .btn-danger:hover { background: #cc0000; transform: scale(1.05); }
+
+        .search-input {
+            padding: 10px 15px;
+            background: #252525;
+            border: 1px solid #333;
+            border-radius: 40px;
+            color: white;
+            width: 250px;
+            margin-bottom: 15px;
+        }
 
         @media (max-width: 768px) {
             .navbar { flex-direction: column; gap: 15px; }
@@ -206,9 +239,7 @@
             <div class="logo-icon">QS</div>
             <div class="logo-text">QuickServe</div>
         </div>
-        <div>
-            <button class="logout-btn" onclick="logout()">Logout</button>
-        </div>
+        <button class="logout-btn" onclick="logout()">Logout</button>
     </nav>
 
     <div class="container">
@@ -216,10 +247,9 @@
         <div id="authSection" class="auth-container">
             <div class="auth-card">
                 <h2>Admin Login</h2>
-                <input type="text" id="adminEmail" placeholder="Admin Email" class="auth-input" value="admin@quickserve.com">
-                <input type="password" id="adminPassword" placeholder="Password" class="auth-input" value="admin123">
+                <input type="text" id="adminEmail" placeholder="Admin Email" class="auth-input" value="quickserve@gmail.com">
+                <input type="password" id="adminPassword" placeholder="Password" class="auth-input" value="servequick@26">
                 <button class="auth-btn" onclick="handleAdminLogin()">Login</button>
-                <p style="text-align: center; margin-top: 20px; color: #666;">Demo: admin@quickserve.com / admin123</p>
             </div>
         </div>
 
@@ -227,6 +257,7 @@
         <div id="dashboard" class="dashboard">
             <div class="stats-grid">
                 <div class="stat-card"><span class="stat-number" id="totalVendors">0</span><br>Total Vendors</div>
+                <div class="stat-card"><span class="stat-number" id="activeVendors">0</span><br>Active Vendors</div>
                 <div class="stat-card"><span class="stat-number" id="totalCustomers">0</span><br>Total Customers</div>
                 <div class="stat-card"><span class="stat-number" id="totalOrders">0</span><br>Total Orders</div>
                 <div class="stat-card"><span class="stat-number" id="monthlyRevenue">P0</span><br>Monthly Revenue</div>
@@ -238,18 +269,20 @@
             </div>
 
             <div class="card">
-                <h3><i class="fas fa-store"></i> All Vendors & Subscription Status</h3>
+                <h3><i class="fas fa-store"></i> All Vendors</h3>
+                <input type="text" id="vendorSearch" class="search-input" placeholder="🔍 Search vendors..." onkeyup="filterVendors()">
                 <table class="vendor-table">
                     <thead>
-                        <tr><th>Vendor Name</th><th>Location</th><th>Subscription</th><th>Status</th><th>Action</th></tr>
-                    </thead>
+                        <tr><th>Vendor Name</th><th>Location</th><th>Phone</th><th>Subscription</th><th>Status</th><th>Actions</th>
+                                                </thead>
                     <tbody id="adminVendorList"></tbody>
                 </table>
             </div>
 
             <div class="card">
                 <h3><i class="fas fa-users"></i> All Customers</h3>
-                <div id="adminCustomerList"></div>
+                <input type="text" id="customerSearch" class="search-input" placeholder="🔍 Search customers..." onkeyup="filterCustomers()">
+                <div id="adminCustomerList" class="customer-list"></div>
             </div>
 
             <div class="card">
@@ -261,11 +294,18 @@
     </div>
 
     <script>
-        const ADMIN_CREDENTIALS = { email: "admin@quickserve.com", password: "admin123" };
+        // Admin Credentials
+        const ADMIN_EMAIL = "quickserve@gmail.com";
+        const ADMIN_PASSWORD = "servequick@26";
+        
+        // Storage Keys
         const VENDOR_STORAGE_KEY = 'quickServe_vendors';
         const CUSTOMER_STORAGE_KEY = 'quickServe_customers';
+        const ORDERS_KEY = 'quickServe_allOrders';
 
         let adminChart = null;
+        let currentVendorFilter = '';
+        let currentCustomerFilter = '';
 
         function getVendors() {
             return JSON.parse(localStorage.getItem(VENDOR_STORAGE_KEY)) || [];
@@ -276,19 +316,21 @@
         }
 
         function getAllOrders() {
-            const vendors = getVendors();
-            let allOrders = [];
-            vendors.forEach(v => {
-                if (v.orderHistory) allOrders.push(...v.orderHistory);
-                if (v.orders) allOrders.push(...v.orders);
-            });
-            return allOrders;
+            return JSON.parse(localStorage.getItem(ORDERS_KEY)) || [];
+        }
+
+        function saveVendors(vendors) {
+            localStorage.setItem(VENDOR_STORAGE_KEY, JSON.stringify(vendors));
+        }
+
+        function saveCustomers(customers) {
+            localStorage.setItem(CUSTOMER_STORAGE_KEY, JSON.stringify(customers));
         }
 
         function handleAdminLogin() {
             const email = document.getElementById('adminEmail').value;
             const password = document.getElementById('adminPassword').value;
-            if (email === ADMIN_CREDENTIALS.email && password === ADMIN_CREDENTIALS.password) {
+            if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
                 localStorage.setItem('quickServe_adminLoggedIn', 'true');
                 showDashboard();
             } else {
@@ -321,51 +363,130 @@
             const vendors = getVendors();
             const customers = getCustomers();
             const allOrders = getAllOrders();
+            const activeVendors = vendors.filter(v => v.subscriptionPaid === true);
 
             document.getElementById('totalVendors').innerHTML = vendors.length;
+            document.getElementById('activeVendors').innerHTML = activeVendors.length;
             document.getElementById('totalCustomers').innerHTML = customers.length;
             document.getElementById('totalOrders').innerHTML = allOrders.length;
-            const paidVendors = vendors.filter(v => v.subscriptionPaid).length;
-            document.getElementById('monthlyRevenue').innerHTML = `P${paidVendors * 250}`;
+            const monthlyRevenue = vendors.filter(v => v.subscriptionPaid).length * 250;
+            document.getElementById('monthlyRevenue').innerHTML = `P${monthlyRevenue}`;
 
-            // Vendor Table
-            const vendorList = document.getElementById('adminVendorList');
-            vendorList.innerHTML = vendors.map(v => `
-                <tr>
-                    <td>${v.name}</td>
-                    <td>${v.location || 'Not set'}</td>
-                    <td>P250/month</td>
-                    <td style="color: ${v.subscriptionPaid ? '#4caf50' : '#ff6b35'}">${v.subscriptionPaid ? 'Active' : 'Pending'}</td>
-                    <td><button class="btn-outline" onclick="toggleSubscription(${v.id})">${v.subscriptionPaid ? 'Deactivate' : 'Activate'}</button></td>
-                </tr>
-            `).join('');
-
-            // Customer List
-            document.getElementById('adminCustomerList').innerHTML = customers.map(c => `
-                <div style="padding: 10px; border-bottom: 1px solid #333;">
-                    <i class="fas fa-user"></i> ${c.name} (${c.email}) - ${c.orders?.length || 0} orders placed
-                </div>
-            `).join('');
-
-            // Payment History
-            const paidVendorsList = vendors.filter(v => v.subscriptionPaid);
-            document.getElementById('paymentHistory').innerHTML = paidVendorsList.map(v => `
-                <div style="padding: 10px; border-bottom: 1px solid #333;">
-                    ${v.name} - Paid P250 for this month
-                </div>
-            `).join('') || '<p>No payments recorded</p>';
-
-            // Chart
-            updateChart();
+            renderVendorTable(vendors);
+            renderCustomerList(customers);
+            renderPaymentHistory(vendors);
+            updateChart(vendors, allOrders);
         }
 
-        function toggleSubscription(vendorId) {
+        function renderVendorTable(vendors) {
+            let filteredVendors = vendors;
+            if (currentVendorFilter) {
+                filteredVendors = vendors.filter(v => 
+                    v.name.toLowerCase().includes(currentVendorFilter.toLowerCase()) ||
+                    (v.location && v.location.toLowerCase().includes(currentVendorFilter.toLowerCase())) ||
+                    (v.email && v.email.toLowerCase().includes(currentVendorFilter.toLowerCase()))
+                );
+            }
+
+            const tbody = document.getElementById('adminVendorList');
+            tbody.innerHTML = filteredVendors.map(v => `
+                <tr>
+                    <td><strong>${v.name}</strong><br><small style="color:#888;">${v.email}</small></td>
+                    <td>${v.location || 'Not set'}</td>
+                    <td>${v.phone || 'Not set'}</td>
+                    <td>P250/month</td>
+                    <td style="color: ${v.subscriptionPaid ? '#4caf50' : '#ff6b35'}; font-weight: bold;">
+                        ${v.subscriptionPaid ? '✓ Active' : '✗ Inactive'}
+                    </td>
+                    <td>
+                        <button class="btn-outline" onclick="toggleVendorSubscription(${v.id})" style="margin-right: 5px;">
+                            ${v.subscriptionPaid ? 'Deactivate' : 'Activate'}
+                        </button>
+                        <button class="btn-danger" onclick="deleteVendor(${v.id})">
+                            <i class="fas fa-trash"></i> Remove
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function renderCustomerList(customers) {
+            let filteredCustomers = customers;
+            if (currentCustomerFilter) {
+                filteredCustomers = customers.filter(c => 
+                    c.name.toLowerCase().includes(currentCustomerFilter.toLowerCase()) ||
+                    c.email.toLowerCase().includes(currentCustomerFilter.toLowerCase()) ||
+                    (c.location && c.location.toLowerCase().includes(currentCustomerFilter.toLowerCase()))
+                );
+            }
+
+            const container = document.getElementById('adminCustomerList');
+            container.innerHTML = filteredCustomers.map(c => `
+                <div class="customer-item">
+                    <div>
+                        <strong><i class="fas fa-user"></i> ${c.name}</strong><br>
+                        <small style="color:#888;">${c.email}</small><br>
+                        <small><i class="fas fa-map-marker-alt"></i> ${c.location || 'Location not set'}</small><br>
+                        <small><i class="fas fa-shopping-bag"></i> ${c.orders?.length || 0} orders placed</small>
+                    </div>
+                    <button class="btn-danger" onclick="deleteCustomer(${c.id})">
+                        <i class="fas fa-trash"></i> Remove Customer
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function renderPaymentHistory(vendors) {
+            const paidVendors = vendors.filter(v => v.subscriptionPaid);
+            const container = document.getElementById('paymentHistory');
+            if (paidVendors.length === 0) {
+                container.innerHTML = '<p style="color:#888;">No payments recorded this month</p>';
+                return;
+            }
+            container.innerHTML = paidVendors.map(v => `
+                <div style="padding: 12px; border-bottom: 1px solid #333; display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <strong>${v.name}</strong><br>
+                        <small>${v.email}</small>
+                    </div>
+                    <div style="text-align: right;">
+                        <span style="color:#4caf50;">✓ P250 paid</span><br>
+                        <small>Subscription active</small>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function toggleVendorSubscription(vendorId) {
             const vendors = getVendors();
             const vendor = vendors.find(v => v.id === vendorId);
             if (vendor) {
                 vendor.subscriptionPaid = !vendor.subscriptionPaid;
-                localStorage.setItem(VENDOR_STORAGE_KEY, JSON.stringify(vendors));
+                saveVendors(vendors);
                 renderAdminDashboard();
+                alert(`${vendor.name} subscription ${vendor.subscriptionPaid ? 'activated' : 'deactivated'}`);
+            }
+        }
+
+        function deleteVendor(vendorId) {
+            const vendors = getVendors();
+            const vendor = vendors.find(v => v.id === vendorId);
+            if (confirm(`Are you sure you want to remove "${vendor?.name}"? This will delete all their data and cannot be undone.`)) {
+                const filteredVendors = vendors.filter(v => v.id !== vendorId);
+                saveVendors(filteredVendors);
+                renderAdminDashboard();
+                alert('Vendor removed successfully');
+            }
+        }
+
+        function deleteCustomer(customerId) {
+            const customers = getCustomers();
+            const customer = customers.find(c => c.id === customerId);
+            if (confirm(`Are you sure you want to remove "${customer?.name}"? This will delete all their order history.`)) {
+                const filteredCustomers = customers.filter(c => c.id !== customerId);
+                saveCustomers(filteredCustomers);
+                renderAdminDashboard();
+                alert('Customer removed successfully');
             }
         }
 
@@ -381,45 +502,81 @@
             const vendor = vendors.find(v => v.name.toLowerCase() === vendorName?.toLowerCase());
             if (vendor) {
                 vendor.subscriptionPaid = true;
-                localStorage.setItem(VENDOR_STORAGE_KEY, JSON.stringify(vendors));
+                saveVendors(vendors);
                 renderAdminDashboard();
-                alert(`Payment recorded for ${vendor.name}`);
+                alert(`Payment recorded for ${vendor.name}. Subscription now active.`);
             } else {
-                alert('Vendor not found');
+                alert('Vendor not found. Please check the name.');
             }
         }
 
-        function updateChart() {
+        function updateChart(vendors, orders) {
             const ctx = document.getElementById('adminChart')?.getContext('2d');
             if (!ctx) return;
-            const vendors = getVendors();
-            const weeklyOrders = [45, 62, 78, getAllOrders().length];
+            
+            const weeks = ['Week 1', 'Week 2', 'Week 3', 'Week 4'];
+            const weeklyOrders = [45, 62, 78, orders.length];
+            const vendorGrowth = [vendors.length - 2, vendors.length - 1, vendors.length, vendors.length];
+            
             if (adminChart) adminChart.destroy();
             adminChart = new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
-                    datasets: [{
-                        label: 'Orders',
-                        data: weeklyOrders,
-                        borderColor: '#ff6b35',
-                        backgroundColor: 'rgba(255, 107, 53, 0.1)',
-                        tension: 0.4,
-                        fill: true
-                    }, {
-                        label: 'Vendors',
-                        data: [vendors.length-2, vendors.length-1, vendors.length, vendors.length],
-                        borderColor: '#ffaa7a',
-                        backgroundColor: 'rgba(255, 170, 122, 0.1)',
-                        tension: 0.4,
-                        fill: true
-                    }]
+                    labels: weeks,
+                    datasets: [
+                        {
+                            label: 'Orders',
+                            data: weeklyOrders,
+                            borderColor: '#ff6b35',
+                            backgroundColor: 'rgba(255, 107, 53, 0.1)',
+                            tension: 0.4,
+                            fill: true,
+                            borderWidth: 2
+                        },
+                        {
+                            label: 'Vendors',
+                            data: vendorGrowth,
+                            borderColor: '#ffaa7a',
+                            backgroundColor: 'rgba(255, 170, 122, 0.1)',
+                            tension: 0.4,
+                            fill: true,
+                            borderWidth: 2
+                        }
+                    ]
                 },
-                options: { responsive: true, maintainAspectRatio: true }
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            labels: { color: '#ffffff' }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            grid: { color: '#333' },
+                            ticks: { color: '#aaa' }
+                        },
+                        x: {
+                            grid: { color: '#333' },
+                            ticks: { color: '#aaa' }
+                        }
+                    }
+                }
             });
         }
 
-        // Initialize default subscription status
+        function filterVendors() {
+            currentVendorFilter = document.getElementById('vendorSearch').value;
+            renderVendorTable(getVendors());
+        }
+
+        function filterCustomers() {
+            currentCustomerFilter = document.getElementById('customerSearch').value;
+            renderCustomerList(getCustomers());
+        }
+
+        // Initialize default subscription status for all vendors
         function initAdmin() {
             const vendors = getVendors();
             let changed = false;
@@ -428,8 +585,11 @@
                     v.subscriptionPaid = true;
                     changed = true;
                 }
+                if (!v.menu) v.menu = [];
+                if (!v.orders) v.orders = [];
+                if (!v.orderHistory) v.orderHistory = [];
             });
-            if (changed) localStorage.setItem(VENDOR_STORAGE_KEY, JSON.stringify(vendors));
+            if (changed) saveVendors(vendors);
             checkLogin();
         }
 
