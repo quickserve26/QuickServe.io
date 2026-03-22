@@ -35,6 +35,8 @@
             top: 0;
             z-index: 1000;
             border-bottom: 2px solid #ff6b35;
+            flex-wrap: wrap;
+            gap: 15px;
         }
 
         .logo {
@@ -65,6 +67,41 @@
             background-clip: text;
             color: transparent;
         }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .profile-btn {
+            background: rgba(255, 107, 53, 0.2);
+            border: 1px solid #ff6b35;
+            padding: 8px 15px;
+            border-radius: 40px;
+            color: #ff6b35;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .profile-btn:hover { background: #ff6b35; color: white; transform: scale(1.05); }
+
+        .settings-btn {
+            background: rgba(255, 107, 53, 0.2);
+            border: 1px solid #ff6b35;
+            padding: 8px 15px;
+            border-radius: 40px;
+            color: #ff6b35;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .settings-btn:hover { background: #ff6b35; color: white; transform: scale(1.05); }
+
         .logout-btn {
             background: #ff6b35;
             border: none;
@@ -143,7 +180,7 @@
             background: linear-gradient(90deg, transparent, rgba(255, 107, 53, 0.1), transparent);
             transition: left 0.6s ease;
         }
-        .card:hover { transform: translateY(-10px); border-color: #ff6b35; box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+        .card:hover { transform: translateY(-5px); border-color: #ff6b35; }
         .card:hover::before { left: 100%; }
 
         .goal-card {
@@ -199,6 +236,13 @@
             object-fit: cover;
             margin-right: 15px;
         }
+        .profile-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #ff6b35;
+        }
         .btn-primary {
             background: linear-gradient(135deg, #ff6b35, #ff8c5a);
             border: none;
@@ -221,6 +265,17 @@
             color: #ff6b35;
         }
         .btn-outline:hover { background: #ff6b35; color: white; transform: scale(1.05); }
+        .btn-success {
+            background: #4caf50;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+        }
+        .btn-success:hover { transform: scale(1.05); background: #45a049; }
         select {
             background: #333;
             color: white;
@@ -232,10 +287,11 @@
         input, textarea {
             background: #252525;
             border: 1px solid #333;
-            padding: 8px;
+            padding: 10px;
             border-radius: 8px;
             color: white;
             margin: 5px 0;
+            width: 100%;
         }
         input:focus, textarea:focus {
             outline: none;
@@ -247,7 +303,35 @@
             gap: 10px;
             flex-wrap: wrap;
         }
-        @media (max-width: 768px) { .navbar { flex-direction: column; gap: 15px; } }
+        .subscription-banner {
+            background: #ff6b35;
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal.active { display: flex; }
+        .modal-content {
+            background: #1a1a1a;
+            border-radius: 24px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            border-top: 5px solid #ff6b35;
+        }
+        @media (max-width: 768px) { .navbar { flex-direction: column; } .nav-actions { width: 100%; justify-content: center; } }
     </style>
 </head>
 <body>
@@ -256,8 +340,9 @@
             <div class="logo-icon">QS</div>
             <div class="logo-text">QuickServe</div>
         </div>
-        <div style="display: flex; align-items: center; gap: 20px;">
-            <span id="vendorNameDisplay" style="color: #ff6b35;"></span>
+        <div class="nav-actions" id="navActions" style="display: none;">
+            <button class="profile-btn" onclick="openProfileModal()"><i class="fas fa-user-circle"></i> Profile</button>
+            <button class="settings-btn" onclick="openSettingsModal()"><i class="fas fa-cog"></i> Settings</button>
             <button class="logout-btn" onclick="logout()">Logout</button>
         </div>
     </nav>
@@ -278,13 +363,25 @@
 
         <!-- Vendor Dashboard -->
         <div id="dashboard" class="dashboard">
-            <!-- Subscription Status Warning -->
-            <div id="subscriptionWarning" style="display: none; background: #ff4444; padding: 15px; border-radius: 12px; margin-bottom: 20px; text-align: center;">
-                <i class="fas fa-exclamation-triangle"></i> Your subscription has expired. Please contact admin to reactivate your account.
+            <!-- Subscription Required Banner -->
+            <div id="subscriptionRequired" class="subscription-banner" style="display: none;">
+                <i class="fas fa-credit-card"></i> Subscription Required! You need to subscribe to start selling. Pay P250/month to activate your store.
+                <button class="btn-primary" onclick="openSubscribeModal()" style="margin-left: 15px;">Subscribe Now</button>
             </div>
 
-            <!-- Goal Card -->
-            <div class="goal-card">
+            <!-- Subscription Active Banner -->
+            <div id="subscriptionActive" class="subscription-banner" style="display: none; background: #4caf50;">
+                <i class="fas fa-check-circle"></i> Your subscription is active! You can now list your products and receive orders.
+            </div>
+
+            <!-- Subscription Expired Banner -->
+            <div id="subscriptionExpired" class="subscription-banner" style="display: none; background: #ff4444;">
+                <i class="fas fa-exclamation-triangle"></i> Your subscription has expired. Please renew to continue using QuickServe.
+                <button class="btn-primary" onclick="openSubscribeModal()" style="margin-left: 15px;">Renew Now</button>
+            </div>
+
+            <!-- Goal Card (only visible if subscribed) -->
+            <div id="goalCard" class="goal-card" style="display: none;">
                 <h3><i class="fas fa-bullseye"></i> Today's Customer Reach Goal</h3>
                 <div class="goal-circle" id="goalCircle">
                     <div class="goal-inner">
@@ -295,8 +392,8 @@
                 <p><span id="customersDelivered">0</span> / <span id="goalTarget">50</span> customers delivered</p>
             </div>
 
-            <!-- Orders Overview -->
-            <div class="card">
+            <!-- Orders Overview (only visible if subscribed) -->
+            <div id="ordersOverview" class="card" style="display: none;">
                 <h3><i class="fas fa-chart-line"></i> Today's Orders Overview</h3>
                 <div class="stats-grid">
                     <div class="stat-card"><span class="stat-number" id="pendingOrders">0</span><br>Pending</div>
@@ -305,33 +402,90 @@
                 </div>
             </div>
 
-            <!-- Menu Catalog -->
-            <div class="card">
+            <!-- Menu Catalog (only visible if subscribed) -->
+            <div id="menuSection" class="card" style="display: none;">
                 <h3><i class="fas fa-utensils"></i> My Menu Catalog</h3>
                 <div class="menu-grid" id="vendorMenuGrid"></div>
                 <button class="btn-primary" onclick="addMenuItem()" style="margin-top: 20px;">+ Add Menu Item</button>
             </div>
 
-            <!-- Today's Orders -->
-            <div class="card">
+            <!-- Today's Orders (only visible if subscribed) -->
+            <div id="ordersSection" class="card" style="display: none;">
                 <h3><i class="fas fa-clock"></i> Today's Orders</h3>
                 <div class="orders-grid" id="vendorOrdersGrid"></div>
             </div>
 
-            <!-- Order History -->
-            <div class="card">
+            <!-- Order History (only visible if subscribed) -->
+            <div id="historySection" class="card" style="display: none;">
                 <h3><i class="fas fa-history"></i> Order History</h3>
                 <div id="orderHistoryList"></div>
             </div>
 
-            <!-- Settings -->
-            <div class="card">
-                <h3><i class="fas fa-cog"></i> Settings</h3>
-                <p>Store Name: <input type="text" id="storeName" style="width:100%;"></p>
-                <p>Location: <input type="text" id="storeLocation" style="width:100%;" placeholder="e.g., Gaborone CBD, UB Campus, Fairgrounds"></p>
-                <p>Phone Number: <input type="text" id="storePhone" style="width:100%;" placeholder="e.g., 71234567"></p>
-                <p>Daily Goal (customers): <input type="number" id="dailyGoal" style="width:100%;"></p>
-                <button class="btn-primary" onclick="updateVendorSettings()">Save Settings</button>
+            <!-- Free Preview Message (if not subscribed) -->
+            <div id="freePreview" class="card" style="display: none; text-align: center;">
+                <i class="fas fa-lock" style="font-size: 48px; color: #ff6b35;"></i>
+                <h3>Subscribe to Unlock Full Features</h3>
+                <p>Your store is in preview mode. Subscribe now to:</p>
+                <ul style="text-align: left; margin: 20px; list-style: none;">
+                    <li>✓ List your menu items</li>
+                    <li>✓ Receive customer orders</li>
+                    <li>✓ Track daily goals and analytics</li>
+                    <li>✓ Manage orders and history</li>
+                </ul>
+                <button class="btn-primary" onclick="openSubscribeModal()">Subscribe Now - P250/month</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Modal -->
+    <div id="profileModal" class="modal">
+        <div class="modal-content">
+            <h3 style="color:#ff6b35;"><i class="fas fa-user-circle"></i> My Profile</h3>
+            <div style="text-align: center; margin: 20px 0;">
+                <img id="profileImagePreview" src="" class="profile-image" style="width: 100px; height: 100px;">
+                <button class="btn-outline" onclick="uploadProfileImage()" style="margin-top: 10px;"><i class="fas fa-upload"></i> Upload Profile Picture</button>
+                <input type="file" id="profileImageInput" accept="image/*" style="display: none;" onchange="handleProfileImageUpload(event)">
+            </div>
+            <p>Store Name: <strong id="profileStoreName"></strong></p>
+            <p>Email: <strong id="profileEmail"></strong></p>
+            <p>Phone: <strong id="profilePhone"></strong></p>
+            <p>Location: <strong id="profileLocation"></strong></p>
+            <p>Subscription: <strong id="profileSubscription"></strong></p>
+            <button class="btn-primary" onclick="closeProfileModal()" style="margin-top: 20px;">Close</button>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <h3 style="color:#ff6b35;"><i class="fas fa-cog"></i> Store Settings</h3>
+            <p>Store Name: <input type="text" id="settingsStoreName"></p>
+            <p>Location: <input type="text" id="settingsLocation" placeholder="e.g., Gaborone CBD, UB Campus"></p>
+            <p>Phone Number: <input type="text" id="settingsPhone" placeholder="e.g., 71234567"></p>
+            <p>Daily Goal: <input type="number" id="settingsDailyGoal"></p>
+            <button class="btn-primary" onclick="saveSettings()">Save Changes</button>
+            <button class="btn-outline" onclick="closeSettingsModal()" style="margin-top: 10px;">Cancel</button>
+        </div>
+    </div>
+
+    <!-- Subscribe Modal -->
+    <div id="subscribeModal" class="modal">
+        <div class="modal-content">
+            <h3 style="color:#ff6b35;"><i class="fas fa-credit-card"></i> Subscribe to QuickServe</h3>
+            <p style="text-align: center; font-size: 32px; margin: 20px 0;">P250<span style="font-size: 16px;">/month</span></p>
+            <p>Benefits of subscription:</p>
+            <ul style="margin: 15px 0; padding-left: 20px;">
+                <li>✓ List unlimited menu items</li>
+                <li>✓ Accept customer orders</li>
+                <li>✓ Track daily goals</li>
+                <li>✓ View order history</li>
+                <li>✓ Get featured in customer searches</li>
+            </ul>
+            <div class="payment-options" style="display: flex; flex-direction: column; gap: 10px;">
+                <button class="btn-primary" onclick="paySubscription('Orange Money')"><i class="fas fa-mobile-alt"></i> Pay with Orange Money</button>
+                <button class="btn-primary" onclick="paySubscription('BTC Mobile')"><i class="fas fa-mobile-alt"></i> Pay with BTC Mobile</button>
+                <button class="btn-primary" onclick="paySubscription('Credit Card')"><i class="fas fa-credit-card"></i> Pay with Credit Card</button>
+                <button class="btn-outline" onclick="closeSubscribeModal()">Cancel</button>
             </div>
         </div>
     </div>
@@ -346,9 +500,8 @@
         function initStorage() {
             if (!localStorage.getItem(VENDOR_STORAGE_KEY)) {
                 const defaultVendors = [
-                    { id: 1, email: "mama@kitchen.com", password: "123456", name: "Mama's Kitchen", location: "Gaborone CBD", phone: "71234567", dailyGoal: 50, deliveredToday: 12, subscriptionPaid: true, menu: [{name: "Beef Stew", price: 35, desc: "Tender beef with rice", available: true, image: "https://images.unsplash.com/photo-1544025162-d76694265947?w=100"}, {name: "Grilled Chicken", price: 45, desc: "With chips and salad", available: true, image: "https://images.unsplash.com/photo-1562967914-608f82629710?w=100"}], orders: [], orderHistory: [] },
-                    { id: 2, email: "tasty@bites.com", password: "123456", name: "Tasty Bites", location: "UB Campus", phone: "71345678", dailyGoal: 40, deliveredToday: 8, subscriptionPaid: true, menu: [{name: "Burger", price: 30, desc: "Beef burger with fries", available: true, image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=100"}, {name: "Pizza Slice", price: 25, desc: "Cheese and pepperoni", available: true, image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=100"}], orders: [], orderHistory: [] },
-                    { id: 3, email: "spice@corner.com", password: "123456", name: "Spice Corner", location: "Fairgrounds", phone: "71456789", dailyGoal: 60, deliveredToday: 25, subscriptionPaid: false, menu: [{name: "Biryani", price: 50, desc: "Spicy chicken biryani", available: true, image: "https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=100"}, {name: "Samosa", price: 10, desc: "3 pieces", available: true, image: "https://images.unsplash.com/photo-1601050985023-6d6ad8b5b4f4?w=100"}], orders: [], orderHistory: [] }
+                    { id: 1, email: "mama@kitchen.com", password: "123456", name: "Mama's Kitchen", location: "Gaborone CBD", phone: "71234567", dailyGoal: 50, deliveredToday: 12, subscriptionPaid: true, subscriptionActive: true, profileImage: "", menu: [{name: "Beef Stew", price: 35, desc: "Tender beef with rice", available: true, image: "https://images.unsplash.com/photo-1544025162-d76694265947?w=100"}], orders: [], orderHistory: [] },
+                    { id: 2, email: "tasty@bites.com", password: "123456", name: "Tasty Bites", location: "UB Campus", phone: "71345678", dailyGoal: 40, deliveredToday: 8, subscriptionPaid: true, subscriptionActive: true, profileImage: "", menu: [{name: "Burger", price: 30, desc: "Beef burger with fries", available: true, image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=100"}], orders: [], orderHistory: [] }
                 ];
                 localStorage.setItem(VENDOR_STORAGE_KEY, JSON.stringify(defaultVendors));
             }
@@ -383,25 +536,64 @@
         function showAuth() {
             document.getElementById('authSection').style.display = 'flex';
             document.getElementById('dashboard').classList.remove('active');
+            document.getElementById('navActions').style.display = 'none';
         }
 
         function showDashboard() {
             document.getElementById('authSection').style.display = 'none';
             document.getElementById('dashboard').classList.add('active');
-            document.getElementById('vendorNameDisplay').innerHTML = `<i class="fas fa-store"></i> ${currentVendor.name}`;
-            document.getElementById('storeName').value = currentVendor.name;
-            document.getElementById('storeLocation').value = currentVendor.location || '';
-            document.getElementById('storePhone').value = currentVendor.phone || '';
-            document.getElementById('dailyGoal').value = currentVendor.dailyGoal;
+            document.getElementById('navActions').style.display = 'flex';
             
-            // Show subscription warning if not paid
-            if (!currentVendor.subscriptionPaid) {
-                document.getElementById('subscriptionWarning').style.display = 'block';
+            // Check subscription status
+            const isSubscribed = currentVendor.subscriptionActive === true && currentVendor.subscriptionPaid === true;
+            
+            if (!isSubscribed && !currentVendor.subscriptionPaid) {
+                // New vendor, not subscribed yet
+                document.getElementById('subscriptionRequired').style.display = 'block';
+                document.getElementById('subscriptionActive').style.display = 'none';
+                document.getElementById('subscriptionExpired').style.display = 'none';
+                document.getElementById('goalCard').style.display = 'none';
+                document.getElementById('ordersOverview').style.display = 'none';
+                document.getElementById('menuSection').style.display = 'none';
+                document.getElementById('ordersSection').style.display = 'none';
+                document.getElementById('historySection').style.display = 'none';
+                document.getElementById('freePreview').style.display = 'block';
+            } else if (currentVendor.subscriptionActive === false) {
+                // Expired subscription
+                document.getElementById('subscriptionRequired').style.display = 'none';
+                document.getElementById('subscriptionActive').style.display = 'none';
+                document.getElementById('subscriptionExpired').style.display = 'block';
+                document.getElementById('goalCard').style.display = 'none';
+                document.getElementById('ordersOverview').style.display = 'none';
+                document.getElementById('menuSection').style.display = 'none';
+                document.getElementById('ordersSection').style.display = 'none';
+                document.getElementById('historySection').style.display = 'none';
+                document.getElementById('freePreview').style.display = 'block';
             } else {
-                document.getElementById('subscriptionWarning').style.display = 'none';
+                // Active subscription
+                document.getElementById('subscriptionRequired').style.display = 'none';
+                document.getElementById('subscriptionActive').style.display = 'block';
+                document.getElementById('subscriptionExpired').style.display = 'none';
+                document.getElementById('goalCard').style.display = 'block';
+                document.getElementById('ordersOverview').style.display = 'block';
+                document.getElementById('menuSection').style.display = 'block';
+                document.getElementById('ordersSection').style.display = 'block';
+                document.getElementById('historySection').style.display = 'block';
+                document.getElementById('freePreview').style.display = 'none';
+                renderVendorDashboard();
             }
             
-            renderVendorDashboard();
+            // Update profile info
+            document.getElementById('profileStoreName').innerText = currentVendor.name;
+            document.getElementById('profileEmail').innerText = currentVendor.email;
+            document.getElementById('profilePhone').innerText = currentVendor.phone || 'Not set';
+            document.getElementById('profileLocation').innerText = currentVendor.location || 'Not set';
+            document.getElementById('profileSubscription').innerHTML = currentVendor.subscriptionActive ? '<span style="color:#4caf50;">Active</span>' : '<span style="color:#ff6b35;">Inactive - Subscribe to activate</span>';
+            if (currentVendor.profileImage) {
+                document.getElementById('profileImagePreview').src = currentVendor.profileImage;
+            } else {
+                document.getElementById('profileImagePreview').src = 'https://via.placeholder.com/100?text=QS';
+            }
         }
 
         function handleAuth() {
@@ -437,7 +629,9 @@
                     phone: phone || "",
                     dailyGoal: 50,
                     deliveredToday: 0,
-                    subscriptionPaid: true,
+                    subscriptionPaid: false,
+                    subscriptionActive: false,
+                    profileImage: "",
                     menu: [],
                     orders: [],
                     orderHistory: []
@@ -447,6 +641,7 @@
                 currentVendor = newVendor;
                 localStorage.setItem(VENDOR_SESSION_KEY, JSON.stringify(newVendor));
                 showDashboard();
+                alert('Registration successful! Please subscribe to start selling.');
             }
         }
 
@@ -471,20 +666,10 @@
 
         function renderVendorDashboard() {
             if (!currentVendor) return;
-            if (!currentVendor.subscriptionPaid) {
-                document.getElementById('pendingOrders').innerHTML = '0';
-                document.getElementById('preparingOrders').innerHTML = '0';
-                document.getElementById('readyOrders').innerHTML = '0';
-                document.getElementById('vendorMenuGrid').innerHTML = '<p style="color:#ff6b35;">Subscription expired. Please contact admin to renew.</p>';
-                document.getElementById('vendorOrdersGrid').innerHTML = '<p>Subscription expired</p>';
-                document.getElementById('orderHistoryList').innerHTML = '<p>Subscription expired</p>';
-                return;
-            }
-
+            
             const vendorOrders = getVendorOrders();
             const activeOrders = vendorOrders.filter(o => o.status !== 'completed');
             
-            // Goal
             const percentage = Math.min(100, Math.floor((currentVendor.deliveredToday / currentVendor.dailyGoal) * 100));
             document.getElementById('goalPercentage').innerHTML = `${percentage}%`;
             document.getElementById('customersDelivered').innerHTML = currentVendor.deliveredToday;
@@ -492,7 +677,6 @@
             const angle = (percentage / 100) * 360;
             document.getElementById('goalCircle').style.background = `conic-gradient(#ff6b35 ${angle}deg, #333 ${angle}deg)`;
 
-            // Order counts
             const pending = activeOrders.filter(o => o.status === 'pending').length;
             const preparing = activeOrders.filter(o => o.status === 'preparing').length;
             const ready = activeOrders.filter(o => o.status === 'ready').length;
@@ -500,11 +684,10 @@
             document.getElementById('preparingOrders').innerHTML = preparing;
             document.getElementById('readyOrders').innerHTML = ready;
 
-            // Menu
             document.getElementById('vendorMenuGrid').innerHTML = currentVendor.menu.map((item, idx) => `
                 <div class="menu-item">
                     <div class="flex-row">
-                        ${item.image ? `<img src="${item.image}" class="meal-image-preview" onerror="this.src='https://via.placeholder.com/60?text=Food'">` : ''}
+                        ${item.image ? `<img src="${item.image}" class="meal-image-preview" onerror="this.src='https://via.placeholder.com/60?text=Food'">` : `<div class="meal-image-preview" style="background:#333; display:flex; align-items:center; justify-content:center;"><i class="fas fa-utensils"></i></div>`}
                         <div style="flex:1;">
                             <h4>${item.name}</h4>
                             <p>P${item.price}</p>
@@ -512,45 +695,34 @@
                             <p>Status: <span style="color: ${item.available !== false ? '#4caf50' : '#ff4444'}">${item.available !== false ? 'Available' : 'Unavailable'}</span></p>
                         </div>
                     </div>
-                    <div style="display: flex; gap: 10px; margin-top: 10px;">
+                    <div style="display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap;">
                         <button class="btn-outline" onclick="toggleAvailability(${idx})">${item.available !== false ? 'Mark Unavailable' : 'Mark Available'}</button>
                         <button class="btn-outline" onclick="editMenuItem(${idx})">Edit</button>
                         <button class="btn-outline" onclick="deleteMenuItem(${idx})">Remove</button>
                     </div>
                 </div>
-            `).join('');
+            `).join('') || '<p>No menu items yet. Add your first item above!</p>';
 
-            // Today's Orders
             document.getElementById('vendorOrdersGrid').innerHTML = activeOrders.map(order => `
                 <div class="order-card">
                     <p><strong>${order.item}</strong></p>
                     <p>Customer: ${order.customerName}</p>
                     <p>Amount: P${order.price}</p>
                     <p>Status: <span style="color: ${order.status === 'ready' ? '#4caf50' : '#ff6b35'}">${order.status}</span></p>
-                    <select onchange="updateOrderStatus(${order.id}, this.value)">
-                        <option ${order.status === 'pending' ? 'selected' : ''}>pending</option>
-                        <option ${order.status === 'preparing' ? 'selected' : ''}>preparing</option>
-                        <option ${order.status === 'ready' ? 'selected' : ''}>ready</option>
-                    </select>
-                    <button class="btn-primary" onclick="markDelivered(${order.id})">Mark Delivered</button>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px;">
+                        <button class="btn-outline" onclick="updateOrderStatus(${order.id}, 'preparing')" ${order.status !== 'pending' ? 'disabled' : ''}>Start Preparing</button>
+                        <button class="btn-success" onclick="updateOrderStatus(${order.id}, 'ready')" ${order.status !== 'preparing' ? 'disabled' : ''}>Mark Ready</button>
+                        <button class="btn-primary" onclick="markDelivered(${order.id})" ${order.status !== 'ready' ? 'disabled' : ''}>Mark Delivered</button>
+                    </div>
                 </div>
             `).join('') || '<p>No orders yet</p>';
 
-            // History
             const completedOrders = vendorOrders.filter(o => o.status === 'completed');
             document.getElementById('orderHistoryList').innerHTML = completedOrders.slice(0, 20).map(h => `
                 <div style="padding: 10px; border-bottom: 1px solid #333;">
                     ${h.item} - ${h.customerName} - P${h.price} - ${h.timestamp}
                 </div>
             `).join('') || '<p>No history yet</p>';
-        }
-
-        function toggleAvailability(index) {
-            if (currentVendor.menu[index]) {
-                currentVendor.menu[index].available = currentVendor.menu[index].available === false ? true : false;
-                updateVendorInStorage();
-                renderVendorDashboard();
-            }
         }
 
         function updateOrderStatus(orderId, status) {
@@ -576,22 +748,47 @@
             }
         }
 
+        function toggleAvailability(index) {
+            if (currentVendor.menu[index]) {
+                currentVendor.menu[index].available = currentVendor.menu[index].available === false ? true : false;
+                updateVendorInStorage();
+                renderVendorDashboard();
+            }
+        }
+
         function addMenuItem() {
             const name = prompt("Enter item name:");
             if (!name) return;
             const price = parseFloat(prompt("Enter price (P):"));
+            if (isNaN(price)) return;
             const desc = prompt("Enter description:");
-            const imageUrl = prompt("Enter image URL (optional - leave blank for default):");
             
-            currentVendor.menu.push({ 
-                name, 
-                price, 
-                desc: desc || "", 
-                available: true,
-                image: imageUrl || "https://via.placeholder.com/60?text=Food"
-            });
-            updateVendorInStorage();
-            renderVendorDashboard();
+            // Image upload from phone
+            const useCamera = confirm("Do you want to take a photo of the meal? Click OK to upload from phone, Cancel to skip.");
+            if (useCamera) {
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = 'image/*';
+                input.capture = 'environment';
+                input.onchange = (e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = (event) => {
+                            const imageUrl = event.target.result;
+                            currentVendor.menu.push({ name, price, desc: desc || "", available: true, image: imageUrl });
+                            updateVendorInStorage();
+                            renderVendorDashboard();
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                };
+                input.click();
+            } else {
+                currentVendor.menu.push({ name, price, desc: desc || "", available: true, image: "https://via.placeholder.com/60?text=Food" });
+                updateVendorInStorage();
+                renderVendorDashboard();
+            }
         }
 
         function editMenuItem(index) {
@@ -602,10 +799,30 @@
             if (!isNaN(newPrice)) item.price = newPrice;
             const newDesc = prompt("Edit description:", item.desc);
             if (newDesc !== null) item.desc = newDesc;
-            const newImage = prompt("Edit image URL:", item.image);
-            if (newImage !== null) item.image = newImage;
-            updateVendorInStorage();
-            renderVendorDashboard();
+            
+            const updateImage = confirm("Do you want to update the meal photo?");
+            if (updateImage) {
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = 'image/*';
+                input.capture = 'environment';
+                input.onchange = (e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = (event) => {
+                            item.image = event.target.result;
+                            updateVendorInStorage();
+                            renderVendorDashboard();
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                };
+                input.click();
+            } else {
+                updateVendorInStorage();
+                renderVendorDashboard();
+            }
         }
 
         function deleteMenuItem(index) {
@@ -616,14 +833,81 @@
             }
         }
 
-        function updateVendorSettings() {
-            currentVendor.name = document.getElementById('storeName').value;
-            currentVendor.location = document.getElementById('storeLocation').value;
-            currentVendor.phone = document.getElementById('storePhone').value;
-            currentVendor.dailyGoal = parseInt(document.getElementById('dailyGoal').value);
+        function openProfileModal() {
+            document.getElementById('profileStoreName').innerText = currentVendor.name;
+            document.getElementById('profileEmail').innerText = currentVendor.email;
+            document.getElementById('profilePhone').innerText = currentVendor.phone || 'Not set';
+            document.getElementById('profileLocation').innerText = currentVendor.location || 'Not set';
+            document.getElementById('profileSubscription').innerHTML = currentVendor.subscriptionActive ? '<span style="color:#4caf50;">Active</span>' : '<span style="color:#ff6b35;">Inactive</span>';
+            if (currentVendor.profileImage) {
+                document.getElementById('profileImagePreview').src = currentVendor.profileImage;
+            }
+            document.getElementById('profileModal').classList.add('active');
+        }
+
+        function closeProfileModal() {
+            document.getElementById('profileModal').classList.remove('active');
+        }
+
+        function uploadProfileImage() {
+            const input = document.getElementById('profileImageInput');
+            input.click();
+        }
+
+        function handleProfileImageUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    currentVendor.profileImage = e.target.result;
+                    updateVendorInStorage();
+                    document.getElementById('profileImagePreview').src = e.target.result;
+                    alert('Profile picture updated!');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function openSettingsModal() {
+            document.getElementById('settingsStoreName').value = currentVendor.name;
+            document.getElementById('settingsLocation').value = currentVendor.location || '';
+            document.getElementById('settingsPhone').value = currentVendor.phone || '';
+            document.getElementById('settingsDailyGoal').value = currentVendor.dailyGoal;
+            document.getElementById('settingsModal').classList.add('active');
+        }
+
+        function closeSettingsModal() {
+            document.getElementById('settingsModal').classList.remove('active');
+        }
+
+        function saveSettings() {
+            currentVendor.name = document.getElementById('settingsStoreName').value;
+            currentVendor.location = document.getElementById('settingsLocation').value;
+            currentVendor.phone = document.getElementById('settingsPhone').value;
+            currentVendor.dailyGoal = parseInt(document.getElementById('settingsDailyGoal').value);
             updateVendorInStorage();
+            closeSettingsModal();
             renderVendorDashboard();
             alert('Settings saved!');
+        }
+
+        function openSubscribeModal() {
+            document.getElementById('subscribeModal').classList.add('active');
+        }
+
+        function closeSubscribeModal() {
+            document.getElementById('subscribeModal').classList.remove('active');
+        }
+
+        function paySubscription(method) {
+            if (confirm(`Pay P250 via ${method}?`)) {
+                currentVendor.subscriptionPaid = true;
+                currentVendor.subscriptionActive = true;
+                updateVendorInStorage();
+                closeSubscribeModal();
+                showDashboard();
+                alert(`✅ Payment successful! Your subscription is now active. You can now list your products.`);
+            }
         }
 
         function updateVendorInStorage() {
