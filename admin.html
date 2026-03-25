@@ -40,8 +40,7 @@
         }
         .logo:hover { transform: scale(1.05); }
         .logo-icon {
-            width: 45px;
-            height: 45px;
+            width: 45px; height: 45px;
             background: linear-gradient(135deg, #ff6b35, #ff8c5a);
             border-radius: 50%;
             display: flex;
@@ -80,34 +79,20 @@
             width: 100%;
             max-width: 450px;
             border: 1px solid rgba(255, 107, 53, 0.3);
-            transition: all 0.4s ease;
         }
-        .auth-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(255, 107, 53, 0.2); border-color: #ff6b35; }
         .auth-card h2 { text-align: center; margin-bottom: 30px; color: #ff6b35; }
         .auth-input {
-            width: 100%;
-            padding: 15px;
-            margin-bottom: 20px;
-            background: #252525;
-            border: 1px solid #333;
-            border-radius: 12px;
-            color: white;
-            font-size: 16px;
-            transition: all 0.3s ease;
+            width: 100%; padding: 15px; margin-bottom: 20px;
+            background: #252525; border: 1px solid #333; border-radius: 12px;
+            color: white; font-size: 16px;
         }
-        .auth-input:focus { outline: none; border-color: #ff6b35; box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.2); }
+        .auth-input:focus { outline: none; border-color: #ff6b35; }
         .auth-btn {
-            width: 100%;
-            padding: 14px;
+            width: 100%; padding: 14px;
             background: linear-gradient(135deg, #ff6b35, #ff8c5a);
-            border: none;
-            border-radius: 40px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            color: white;
+            border: none; border-radius: 40px;
+            font-weight: 600; cursor: pointer; color: white;
         }
-        .auth-btn:hover { transform: scale(1.02); box-shadow: 0 5px 20px rgba(255, 107, 53, 0.3); }
 
         .dashboard { display: none; }
         .dashboard.active { display: block; animation: fadeIn 0.5s ease; }
@@ -120,8 +105,6 @@
             margin-bottom: 25px;
             border: 1px solid #2a2a2a;
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
-            overflow: hidden;
         }
         .card:hover { transform: translateY(-5px); border-color: #ff6b35; }
 
@@ -136,7 +119,6 @@
             border-radius: 20px;
             padding: 25px;
             text-align: center;
-            transition: all 0.4s ease;
             border: 1px solid #333;
         }
         .stat-card:hover { transform: translateY(-5px); border-radius: 40px 20px 40px 20px; border-color: #ff6b35; }
@@ -158,54 +140,55 @@
         }
         .customer-item:hover { background: #252525; }
 
+        .notifications-list {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+        .notification-item {
+            padding: 12px;
+            border-bottom: 1px solid #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .notification-item.unread {
+            background: rgba(255, 107, 53, 0.1);
+            border-left: 3px solid #ff6b35;
+        }
+        .notification-item .time {
+            font-size: 12px;
+            color: #888;
+        }
+        .mark-read-btn {
+            background: none;
+            border: none;
+            color: #ff6b35;
+            cursor: pointer;
+        }
+
         .btn-primary {
             background: linear-gradient(135deg, #ff6b35, #ff8c5a);
-            border: none;
-            padding: 8px 16px;
-            border-radius: 40px;
-            font-weight: 600;
-            cursor: pointer;
-            color: white;
+            border: none; padding: 8px 16px; border-radius: 40px;
+            font-weight: 600; cursor: pointer; color: white;
         }
-        .btn-primary:hover { transform: scale(1.05); }
         .btn-outline {
-            background: transparent;
-            border: 2px solid #ff6b35;
-            padding: 6px 14px;
-            border-radius: 40px;
-            font-weight: 600;
-            cursor: pointer;
-            color: #ff6b35;
+            background: transparent; border: 2px solid #ff6b35;
+            padding: 6px 14px; border-radius: 40px;
+            font-weight: 600; cursor: pointer; color: #ff6b35;
         }
-        .btn-outline:hover { background: #ff6b35; color: white; }
         .btn-danger {
-            background: #ff4444;
-            border: none;
-            padding: 6px 14px;
-            border-radius: 40px;
-            font-weight: 600;
-            cursor: pointer;
-            color: white;
+            background: #ff4444; border: none; padding: 6px 14px;
+            border-radius: 40px; font-weight: 600; cursor: pointer; color: white;
         }
-        .btn-danger:hover { background: #cc0000; transform: scale(1.05); }
-
         .search-input {
-            padding: 10px 15px;
-            background: #252525;
-            border: 1px solid #333;
-            border-radius: 40px;
-            color: white;
-            width: 100%;
-            max-width: 300px;
+            padding: 10px 15px; background: #252525; border: 1px solid #333;
+            border-radius: 40px; color: white; width: 100%; max-width: 300px;
             margin-bottom: 15px;
         }
-        .admin-hint { text-align: center; margin-top: 20px; padding: 10px; background: rgba(255, 107, 53, 0.1); border-radius: 12px; color: #ffaa7a; font-size: 13px; }
+        .admin-hint { text-align: center; margin-top: 20px; padding: 10px; background: rgba(255,107,53,0.1); border-radius: 12px; color: #ffaa7a; font-size: 13px; }
 
-        @media (max-width: 768px) {
-            .navbar { flex-direction: column; gap: 15px; }
-            .vendor-table { font-size: 12px; }
-            .vendor-table th, .vendor-table td { padding: 8px; }
-        }
+        @media (max-width: 768px) { .navbar { flex-direction: column; gap: 15px; } .vendor-table { font-size: 12px; } }
     </style>
 </head>
 <body>
@@ -239,6 +222,13 @@
                 <div class="stat-card"><span class="stat-number" id="monthlyRevenue">P0</span><br>Monthly Revenue</div>
             </div>
 
+            <!-- Notifications Section -->
+            <div class="card">
+                <h3><i class="fas fa-bell"></i> Payment Notifications</h3>
+                <div id="notificationsList" class="notifications-list"></div>
+                <button class="btn-outline" onclick="clearAllNotifications()">Clear All</button>
+            </div>
+
             <div class="card">
                 <h3><i class="fas fa-chart-bar"></i> Platform Analytics</h3>
                 <canvas id="adminChart" style="max-height: 300px; width: 100%;"></canvas>
@@ -249,7 +239,7 @@
                 <input type="text" id="vendorSearch" class="search-input" placeholder="🔍 Search vendors..." onkeyup="filterVendors()">
                 <div style="overflow-x: auto;">
                     <table class="vendor-table">
-                        <thead><tr><th>Vendor</th><th>Location</th><th>Phone</th><th>Subscription</th><th>Status</th><th>Actions</th></tr></thead>
+                        <thead><tr><th>Vendor</th><th>Location</th><th>Phone</th><th>Subscription</th><th>Status</th><th>Actions</th></thead>
                         <tbody id="adminVendorList"></tbody>
                     </table>
                 </div>
@@ -275,6 +265,7 @@
         const VENDOR_STORAGE_KEY = 'quickServe_vendors';
         const CUSTOMER_STORAGE_KEY = 'quickServe_customers';
         const ORDERS_KEY = 'quickServe_allOrders';
+        const NOTIFICATIONS_KEY = 'quickServe_notifications';
 
         let adminChart = null;
         let currentVendorFilter = '';
@@ -283,6 +274,59 @@
         function getVendors() { return JSON.parse(localStorage.getItem(VENDOR_STORAGE_KEY)) || []; }
         function getCustomers() { return JSON.parse(localStorage.getItem(CUSTOMER_STORAGE_KEY)) || []; }
         function getAllOrders() { return JSON.parse(localStorage.getItem(ORDERS_KEY)) || []; }
+        function getNotifications() { return JSON.parse(localStorage.getItem(NOTIFICATIONS_KEY)) || []; }
+        function saveNotifications(notifs) { localStorage.setItem(NOTIFICATIONS_KEY, JSON.stringify(notifs)); }
+
+        function addNotification(vendorName, amount, method) {
+            const notifs = getNotifications();
+            notifs.unshift({
+                id: Date.now(),
+                vendorName: vendorName,
+                amount: amount,
+                method: method,
+                timestamp: new Date().toLocaleString(),
+                read: false
+            });
+            saveNotifications(notifs);
+            renderNotifications();
+        }
+
+        function renderNotifications() {
+            const notifs = getNotifications();
+            const container = document.getElementById('notificationsList');
+            if (notifs.length === 0) {
+                container.innerHTML = '<div style="text-align:center; padding:20px;">No notifications</div>';
+                return;
+            }
+            container.innerHTML = notifs.map(n => `
+                <div class="notification-item ${!n.read ? 'unread' : ''}">
+                    <div>
+                        <strong>💰 Payment Received</strong><br>
+                        ${n.vendorName} paid P${n.amount} via ${n.method}<br>
+                        <span class="time">${n.timestamp}</span>
+                    </div>
+                    ${!n.read ? `<button class="mark-read-btn" onclick="markRead(${n.id})"><i class="fas fa-check-circle"></i> Mark read</button>` : ''}
+                </div>
+            `).join('');
+        }
+
+        function markRead(id) {
+            const notifs = getNotifications();
+            const idx = notifs.findIndex(n => n.id === id);
+            if (idx !== -1) {
+                notifs[idx].read = true;
+                saveNotifications(notifs);
+                renderNotifications();
+            }
+        }
+
+        function clearAllNotifications() {
+            if (confirm('Clear all notifications?')) {
+                saveNotifications([]);
+                renderNotifications();
+            }
+        }
+
         function saveVendors(vendors) { localStorage.setItem(VENDOR_STORAGE_KEY, JSON.stringify(vendors)); }
         function saveCustomers(customers) { localStorage.setItem(CUSTOMER_STORAGE_KEY, JSON.stringify(customers)); }
 
@@ -313,6 +357,7 @@
             document.getElementById('authSection').style.display = 'none';
             document.getElementById('dashboard').classList.add('active');
             renderAdminDashboard();
+            renderNotifications();
         }
 
         function logout() {
@@ -325,13 +370,13 @@
             const vendors = getVendors();
             const customers = getCustomers();
             const allOrders = getAllOrders();
-            const activeVendors = vendors.filter(v => v.subscriptionActive === true && v.subscriptionPaid === true);
+            const activeVendors = vendors.filter(v => v.subscriptionActive === true);
 
             document.getElementById('totalVendors').innerHTML = vendors.length;
             document.getElementById('activeVendors').innerHTML = activeVendors.length;
             document.getElementById('totalCustomers').innerHTML = customers.length;
             document.getElementById('totalOrders').innerHTML = allOrders.length;
-            const monthlyRevenue = vendors.filter(v => v.subscriptionActive && v.subscriptionPaid).length * 250;
+            const monthlyRevenue = vendors.filter(v => v.subscriptionPaid === true).length * 250;
             document.getElementById('monthlyRevenue').innerHTML = `P${monthlyRevenue}`;
 
             renderVendorTable(vendors);
@@ -358,8 +403,8 @@
                     <td>${v.location || 'Not set'}</td>
                     <td>${v.phone || 'Not set'}</td>
                     <td>P250/month</td>
-                    <td style="color: ${v.subscriptionActive && v.subscriptionPaid ? '#4caf50' : '#ff6b35'};">
-                        ${v.subscriptionActive && v.subscriptionPaid ? '✓ Active' : '✗ Inactive'}
+                    <td style="color: ${v.subscriptionActive ? '#4caf50' : '#ff6b35'};">
+                        ${v.subscriptionActive ? (v.subscriptionPaid ? '✓ Paid' : '⏳ Trial') : '✗ Inactive'}
                     </td>
                     <td>
                         <button class="btn-outline" onclick="toggleVendorSubscription(${v.id})" style="margin-right:5px;">
@@ -397,7 +442,7 @@
         }
 
         function renderPaymentHistory(vendors) {
-            const paidVendors = vendors.filter(v => v.subscriptionActive && v.subscriptionPaid);
+            const paidVendors = vendors.filter(v => v.subscriptionPaid === true);
             const container = document.getElementById('paymentHistory');
             if (paidVendors.length === 0) {
                 container.innerHTML = '<p style="text-align:center; padding:20px;">No payments recorded</p>';
@@ -416,7 +461,17 @@
             const vendor = vendors.find(v => v.id === vendorId);
             if (vendor) {
                 vendor.subscriptionActive = !vendor.subscriptionActive;
-                if (vendor.subscriptionActive) vendor.subscriptionPaid = true;
+                if (vendor.subscriptionActive) {
+                    // If activating and not paid, treat as trial? Let's keep consistent
+                    if (!vendor.subscriptionPaid) {
+                        vendor.trialStartDate = new Date().getTime();
+                        vendor.trialActive = true;
+                    }
+                } else {
+                    // deactivate
+                    vendor.subscriptionPaid = false;
+                    vendor.trialActive = false;
+                }
                 saveVendors(vendors);
                 renderAdminDashboard();
                 alert(`${vendor.name} subscription ${vendor.subscriptionActive ? 'activated' : 'deactivated'}`);
@@ -443,17 +498,20 @@
 
         function recordPayment() {
             const vendors = getVendors();
-            const unpaid = vendors.filter(v => !v.subscriptionActive || !v.subscriptionPaid);
-            if (unpaid.length === 0) {
+            const inactiveVendors = vendors.filter(v => !v.subscriptionActive || !v.subscriptionPaid);
+            if (inactiveVendors.length === 0) {
                 alert('All vendors have active subscriptions!');
                 return;
             }
-            const name = prompt(`Enter vendor name to record payment.\nUnpaid: ${unpaid.map(v => v.name).join(', ')}`);
+            const name = prompt(`Enter vendor name to record payment.\nInactive: ${inactiveVendors.map(v => v.name).join(', ')}`);
             const vendor = vendors.find(v => v.name.toLowerCase() === name?.toLowerCase());
             if (vendor) {
-                vendor.subscriptionActive = true;
                 vendor.subscriptionPaid = true;
+                vendor.subscriptionActive = true;
+                vendor.trialActive = false;
+                vendor.trialStartDate = null;
                 saveVendors(vendors);
+                addNotification(vendor.name, 250, 'Manual Entry');
                 renderAdminDashboard();
                 alert(`Payment recorded for ${vendor.name}`);
             } else {
@@ -483,7 +541,11 @@
 
         function initAdmin() {
             const vendors = getVendors();
-            vendors.forEach(v => { if (v.subscriptionActive === undefined) v.subscriptionActive = false; if (v.subscriptionPaid === undefined) v.subscriptionPaid = false; });
+            vendors.forEach(v => {
+                if (v.subscriptionActive === undefined) v.subscriptionActive = false;
+                if (v.subscriptionPaid === undefined) v.subscriptionPaid = false;
+                if (v.trialStartDate === undefined) v.trialStartDate = null;
+            });
             saveVendors(vendors);
             checkLogin();
         }
