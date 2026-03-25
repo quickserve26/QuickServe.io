@@ -357,7 +357,8 @@
         const VENDOR_STORAGE_KEY = 'quickServe_vendors';
         const VENDOR_SESSION_KEY = 'quickServe_currentVendor';
         const ORDERS_KEY = 'quickServe_allOrders';
-        const TRIAL_DAYS = 14; // 2 weeks free trial
+        const NOTIFICATIONS_KEY = 'quickServe_notifications';
+        const TRIAL_DAYS = 14;
 
         let currentVendor = null;
 
@@ -370,26 +371,23 @@
                 localStorage.setItem(VENDOR_STORAGE_KEY, JSON.stringify(defaultVendors));
             }
             if (!localStorage.getItem(ORDERS_KEY)) localStorage.setItem(ORDERS_KEY, JSON.stringify([]));
+            if (!localStorage.getItem(NOTIFICATIONS_KEY)) localStorage.setItem(NOTIFICATIONS_KEY, JSON.stringify([]));
         }
 
         function getAllOrders() { return JSON.parse(localStorage.getItem(ORDERS_KEY)) || []; }
         function saveOrders(orders) { localStorage.setItem(ORDERS_KEY, JSON.stringify(orders)); }
         function getVendorOrders() { return getAllOrders().filter(o => o.vendorId === currentVendor?.id); }
 
-        // Check trial status and update vendor's subscriptionActive accordingly
         function updateTrialStatus(vendor) {
-            if (!vendor.trialStartDate) return; // no trial (already subscribed)
+            if (!vendor.trialStartDate) return vendor;
             const now = new Date().getTime();
-            const trialStart = vendor.trialStartDate;
-            const daysElapsed = (now - trialStart) / (1000 * 60 * 60 * 24);
+            const daysElapsed = (now - vendor.trialStartDate) / (1000 * 60 * 60 * 24);
             if (daysElapsed >= TRIAL_DAYS) {
-                // Trial expired
                 if (!vendor.subscriptionPaid) {
                     vendor.subscriptionActive = false;
                     vendor.trialActive = false;
                 }
             } else {
-                // Trial still active
                 vendor.subscriptionActive = true;
                 vendor.trialActive = true;
             }
@@ -399,8 +397,7 @@
         function getTrialDaysLeft(vendor) {
             if (!vendor.trialStartDate) return 0;
             const now = new Date().getTime();
-            const trialStart = vendor.trialStartDate;
-            const daysElapsed = (now - trialStart) / (1000 * 60 * 60 * 24);
+            const daysElapsed = (now - vendor.trialStartDate) / (1000 * 60 * 60 * 24);
             const left = Math.max(0, TRIAL_DAYS - daysElapsed);
             return Math.ceil(left);
         }
@@ -409,7 +406,6 @@
             const saved = localStorage.getItem(VENDOR_SESSION_KEY);
             if (saved) {
                 currentVendor = JSON.parse(saved);
-                // Update trial status on each load
                 if (currentVendor.trialStartDate) {
                     currentVendor = updateTrialStatus(currentVendor);
                     updateVendorInStorage();
@@ -435,7 +431,6 @@
             const isTrial = currentVendor.trialActive === true && currentVendor.trialStartDate !== null;
             const isPaid = currentVendor.subscriptionPaid === true;
 
-            // Update banners
             const trialBanner = document.getElementById('trialBanner');
             const subscriptionRequired = document.getElementById('subscriptionRequired');
             const subscriptionActive = document.getElementById('subscriptionActive');
@@ -458,7 +453,6 @@
                     freePreview.style.display = 'none';
                     features.forEach(id => document.getElementById(id).style.display = 'block');
                 } else {
-                    // Should not happen: active but not paid and not trial? treat as inactive
                     trialBanner.style.display = 'none';
                     subscriptionRequired.style.display = 'block';
                     subscriptionActive.style.display = 'none';
@@ -473,7 +467,7 @@
                 features.forEach(id => document.getElementById(id).style.display = 'none');
             }
 
-            // Update profile info
+            // Profile info
             document.getElementById('profileStoreName').innerText = currentVendor.name;
             document.getElementById('profileEmail').innerText = currentVendor.email;
             document.getElementById('profilePhone').innerText = currentVendor.phone || 'Not set';
@@ -512,7 +506,7 @@
                 const newVendor = {
                     id: Date.now(), email, password, name: name || email.split('@')[0],
                     location: location || "", phone: phone || "", dailyGoal: 50, deliveredToday: 0,
-                    subscriptionPaid: false, subscriptionActive: true, // trial active by default
+                    subscriptionPaid: false, subscriptionActive: true,
                     trialStartDate: new Date().getTime(), trialActive: true,
                     profileImage: "", menu: [], orders: [], orderHistory: []
                 };
@@ -739,13 +733,28 @@
 
         function openSubscribeModal() { document.getElementById('subscribeModal').classList.add('active'); }
         function closeSubscribeModal() { document.getElementById('subscribeModal').classList.remove('active'); }
+
+        // Updated paySubscription with notification for admin
         function paySubscription(method) {
             if (confirm(`Pay P250 via ${method}?`)) {
                 currentVendor.subscriptionPaid = true;
                 currentVendor.subscriptionActive = true;
                 currentVendor.trialActive = false;
-                currentVendor.trialStartDate = null; // trial ended
+                currentVendor.trialStartDate = null;
                 updateVendorInStorage();
+
+                // Add notification for admin
+                const notifications = JSON.parse(localStorage.getItem(NOTIFICATIONS_KEY)) || [];
+                notifications.unshift({
+                    id: Date.now(),
+                    vendorName: currentVendor.name,
+                    amount: 250,
+                    method: method,
+                    timestamp: new Date().toLocaleString(),
+                    read: false
+                });
+                localStorage.setItem(NOTIFICATIONS_KEY, JSON.stringify(notifications));
+
                 closeSubscribeModal();
                 showDashboard();
                 alert(`✅ Payment successful! Your subscription is now active. Thank you!`);
